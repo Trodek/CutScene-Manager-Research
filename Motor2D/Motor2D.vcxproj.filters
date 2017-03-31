@@ -79,12 +79,6 @@
     <ClCompile Include="MenuScene.cpp">
       <Filter>Engine\3. Scenes ==========\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="j1Spell.cpp">
-      <Filter>Engine\5. Spells ===========</Filter>
-    </ClCompile>
-    <ClCompile Include="Spell.cpp">
-      <Filter>Engine\5. Spells ===========</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -192,12 +186,6 @@
     <ClInclude Include="MenuScene.h">
       <Filter>Engine\3. Scenes ==========\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="j1Spell.h">
-      <Filter>Engine\5. Spells ===========</Filter>
-    </ClInclude>
-    <ClInclude Include="Spell.h">
-      <Filter>Engine\5. Spells ===========</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Engine\4. Entities ==========</Filter>
     </ClInclude>
@@ -220,9 +208,6 @@
     </Filter>
     <Filter Include="Engine\3. Scenes ==========\Menu">
       <UniqueIdentifier>{afcd3f3f-e70b-4587-86b0-e69ab2ba9728}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\5. Spells ===========">
-      <UniqueIdentifier>{8a97f8fe-717b-4301-947d-3625656831e3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\6. Tools ===========">
       <UniqueIdentifier>{42c748be-4a37-49de-970f-5be811d06b38}</UniqueIdentifier>
