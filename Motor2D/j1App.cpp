@@ -22,6 +22,7 @@
 #include "j1Entity.h"
 #include "j1Viewports.h"
 #include "j1XMLLoader.h"
+#include "j1CutSceneManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -44,6 +45,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entity = new j1Entity();
 	view = new j1Viewports();
 	xmls = new j1XMLLoader();
+	cutscene = new j1CutSceneManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -60,6 +62,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(entity);
 	AddModule(view);
 	AddModule(xmls);
+	AddModule(cutscene);
 
 	// Scene
 	AddModule(scene);

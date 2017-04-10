@@ -29,6 +29,7 @@ class j1Physics;
 class j1Entity;
 class j1Viewports;
 class j1XMLLoader;
+class j1CutSceneManager;
 
 class j1App
 {
@@ -117,6 +118,7 @@ public:
 	j1Entity*			entity = NULL;
 	j1Viewports*        view = NULL;
 	j1XMLLoader*		xmls = NULL;
+	j1CutSceneManager*	cutscene = NULL;
 
 	// Console logs
 	list<string>        logs;

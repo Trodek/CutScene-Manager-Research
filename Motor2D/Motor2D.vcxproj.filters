@@ -85,6 +85,9 @@
     <ClCompile Include="j1XMLLoader.cpp">
       <Filter>Engine\1. Modules =========</Filter>
     </ClCompile>
+    <ClCompile Include="j1CutSceneManager.cpp">
+      <Filter>Engine\7. CutScene Manager ==\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -198,6 +201,9 @@
     <ClInclude Include="j1XMLLoader.h">
       <Filter>Engine\1. Modules =========</Filter>
     </ClInclude>
+    <ClInclude Include="j1CutSceneManager.h">
+      <Filter>Engine\7. CutScene Manager ==\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -226,6 +232,15 @@
     </Filter>
     <Filter Include="Engine\4. Entities ==========\Entities xmls">
       <UniqueIdentifier>{2aa1abf4-2502-44fd-bb67-4c890eb2126d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\7. CutScene Manager ==">
+      <UniqueIdentifier>{8270f4e1-1f3a-470a-b325-bd2ce1e37ac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\7. CutScene Manager ==\Manager">
+      <UniqueIdentifier>{3da6143a-185e-4781-9f0a-1d0e8a315de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\7. CutScene Manager ==\Editor">
+      <UniqueIdentifier>{cf105915-2695-4b34-9c70-a307b8fb11eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
