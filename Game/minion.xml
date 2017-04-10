@@ -1,6 +1,7 @@
 <!-- Config file for the game -->
 
 <file>
+  <size w="64" h="64"/>
    <animations texture ="textures/towersminions_sheet.png">
       <anim speed = "10" name = "run_down" loop = "true">
 	    <rect x = "352" y = "160" w = "64" h = "64"/>
@@ -23,25 +24,6 @@
       <anim speed = "10" name = "idle_down" loop = "true">
         <rect x = "352" y = "160" w = "64" h = "64"/>
       </anim>
-     <anim speed = "10" name = "basic_attack_down" loop = "false">
-       <rect x = "352" y = "64" w = "64" h = "74"/>
-       <rect x = "416" y = "64" w = "64" h = "74"/>
-       <rect x = "416" y = "64" w = "64" h = "74"/>
-     </anim>
-     <anim speed = "10" name = "basic_attack_up" loop = "false">
-       <rect x = "480" y = "64" w = "64" h = "64"/>
-       <rect x = "544" y = "64" w = "64" h = "64"/>
-       <rect x = "544" y = "64" w = "64" h = "64"/>
-     </anim>
-     <anim speed = "10" name = "basic_attack_right" loop = "false">
-       <rect x = "224" y = "64" w = "64" h = "64"/>
-       <rect x = "288" y = "64" w = "64" h = "64"/>
-       <rect x = "288" y = "64" w = "64" h = "64"/>
-     </anim>
-     <anim speed = "10" name = "basic_attack_left" loop = "false">
-       <rect x = "224" y = "64" w = "64" h = "64"/>
-       <rect x = "288" y = "64" w = "64" h = "64"/>
-       <rect x = "288" y = "64" w = "64" h = "64"/>
-     </anim>
    </animations>
+  <stats hp="50" speed="45"/>
 </file>

@@ -100,7 +100,7 @@ public:
 	void OnCollisionEnter(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 	void OnCollisionOut(PhysBody* bodyA, PhysBody* bodyB, b2Fixture* fixtureA, b2Fixture* fixtureB);
 
-	Entity* CreateEntity(entity_name entity, iPoint pos);
+	Entity* CreateEntity(iPoint pos, const char* xml = nullptr);
 	void DeleteEntity(Entity* entity);
 	void ClearEntities();
 

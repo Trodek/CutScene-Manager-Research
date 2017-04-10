@@ -79,6 +79,12 @@
     <ClCompile Include="MenuScene.cpp">
       <Filter>Engine\3. Scenes ==========\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Engine\4. Entities ==========</Filter>
+    </ClCompile>
+    <ClCompile Include="j1XMLLoader.cpp">
+      <Filter>Engine\1. Modules =========</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -189,6 +195,9 @@
     <ClInclude Include="Entity.h">
       <Filter>Engine\4. Entities ==========</Filter>
     </ClInclude>
+    <ClInclude Include="j1XMLLoader.h">
+      <Filter>Engine\1. Modules =========</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -215,5 +224,19 @@
     <Filter Include="Engine\6. Tools ===========\PuguiXML">
       <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\4. Entities ==========\Entities xmls">
+      <UniqueIdentifier>{2aa1abf4-2502-44fd-bb67-4c890eb2126d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Game\link.xml">
+      <Filter>Engine\4. Entities ==========\Entities xmls</Filter>
+    </Xml>
+    <Xml Include="..\Game\minion.xml">
+      <Filter>Engine\4. Entities ==========\Entities xmls</Filter>
+    </Xml>
+    <Xml Include="..\Game\zelda.xml">
+      <Filter>Engine\4. Entities ==========\Entities xmls</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

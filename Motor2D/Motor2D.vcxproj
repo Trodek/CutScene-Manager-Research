@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="j1Console.cpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="j1Timer.cpp" />
     <ClCompile Include="j1Viewports.cpp" />
     <ClCompile Include="j1Physics.cpp" />
+    <ClCompile Include="j1XMLLoader.cpp" />
     <ClCompile Include="MenuScene.cpp" />
     <ClCompile Include="p2Log.cpp" />
     <ClCompile Include="j1Render.cpp" />
@@ -120,6 +122,7 @@
     <ClInclude Include="j1Timer.h" />
     <ClInclude Include="j1Viewports.h" />
     <ClInclude Include="j1Physics.h" />
+    <ClInclude Include="j1XMLLoader.h" />
     <ClInclude Include="MenuScene.h" />
     <ClInclude Include="p2DynArray.h" />
     <ClInclude Include="j1Audio.h" />
@@ -139,6 +142,11 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Scene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Game\link.xml" />
+    <Xml Include="..\Game\minion.xml" />
+    <Xml Include="..\Game\zelda.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

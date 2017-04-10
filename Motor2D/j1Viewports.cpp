@@ -47,13 +47,13 @@ bool j1Viewports::Update(float dt)
 	// ---------------------
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		camera1.x++;
+		camera1.x += 100*dt;
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		camera1.x--;
+		camera1.x -= 100 * dt;
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		camera1.y++;
+		camera1.y += 100 * dt;
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		camera1.y--;
+		camera1.y -= 100 * dt;
 
 	return ret;
 }
@@ -197,6 +197,8 @@ void j1Viewports::DoLayerPrint()
 	quad_list1.Clear();
 
 	line_list.clear();
+
+	circle_list1.Clear();
 }
 
 void j1Viewports::OnCommand(std::list<std::string>& tokens)

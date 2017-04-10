@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <file>
-  <radius value="200"/>
-  <area x="0" y="51" w="400" h="400"/>
-  <activation_time sec="10"/>
-  <speed value="25"/>
+  <size w="34" h="48"/>
   <animations texture ="textures/zelda_spritesheet.png">
     <anim speed = "5" name = "walk_up" loop = "true">
       <rect x = "266" y = "2" w = "34" h = "48"/>
@@ -35,4 +32,5 @@
       <rect x = "118" y = "2" w = "32" h = "48"/>
     </anim>
   </animations>
+  <stats hp="120" speed="160"/>
 </file>

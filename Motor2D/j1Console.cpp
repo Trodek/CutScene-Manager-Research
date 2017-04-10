@@ -10,6 +10,7 @@
 #include "j1Input.h"
 #include "Functions.h"
 #include <sstream>
+#include "j1XMLLoader.h"
 
 #define PADDING 15
 #define OUTPUT_TEXT_COLOR { 0, 178, 255, 255 }
@@ -142,7 +143,7 @@ bool j1Console::Save(pugi::xml_node & node) const
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
 
-	App->LoadXML("config.xml", config_file);
+	App->xmls->LoadXML("config.xml", config_file);
 
 	config = config_file.child("config");
 

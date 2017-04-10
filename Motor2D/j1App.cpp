@@ -21,7 +21,7 @@
 #include "j1Physics.h"
 #include "j1Entity.h"
 #include "j1Viewports.h"
-#include "j1Spell.h"
+#include "j1XMLLoader.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -43,6 +43,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	physics = new j1Physics();
 	entity = new j1Entity();
 	view = new j1Viewports();
+	xmls = new j1XMLLoader();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -58,6 +59,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(console);
 	AddModule(entity);
 	AddModule(view);
+	AddModule(xmls);
 
 	// Scene
 	AddModule(scene);
@@ -342,25 +344,6 @@ void j1App::SaveGame(const char* file) const
 void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
-}
-
-void j1App::LoadXML(const char * path, pugi::xml_document & doc)
-{
-	char* buf = NULL;
-	int size = App->fs->Load(path, &buf);
-	pugi::xml_parse_result result = doc.load_buffer(buf, size);
-	
-	if (buf == NULL)
-		LOG("Error loading '%s', probably wrong XML file name", path);
-	else
-		LOG("Succes loading '%s'", path);
-
-	RELEASE(buf);
-}
-
-void j1App::UnloadXML(pugi::xml_document & doc)
-{
-	doc.reset();
 }
 
 void j1App::CapFps(float fps)

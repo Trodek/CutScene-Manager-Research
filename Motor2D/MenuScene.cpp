@@ -4,6 +4,9 @@
 #include "j1Console.h"
 #include "j1Scene.h"
 #include "p2Log.h"
+#include "Entity.h"
+#include "j1Map.h"
+#include "j1Pathfinding.h"
 
 MenuScene::MenuScene()
 {
@@ -18,6 +21,19 @@ bool MenuScene::Start()
 	bool ret = false;
 
 	change_scene = false;
+
+	if (App->map->Load("cut_scene_map.tmx"))
+	{
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))
+			App->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+	}
+
+	test = App->entity->CreateEntity({ 40,40 }, "link.xml");
+	test->active = true;
 
 	SDL_Rect screen = App->view->GetViewportRect();
 	menu_window = App->gui->UI_CreateWin(iPoint(0, 0), screen.w, screen.h, 0, false);

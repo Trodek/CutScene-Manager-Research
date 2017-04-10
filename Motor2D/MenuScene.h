@@ -16,6 +16,8 @@ enum button_action
 
 };
 
+class Entity;
+
 class MenuScene : public Scene
 {
 public:
@@ -71,6 +73,8 @@ private:
 	vector<UI_Image*>  cursors;
 
 	bool			   is_options = false; 
+
+	Entity*			test = nullptr;
 
 };
 
