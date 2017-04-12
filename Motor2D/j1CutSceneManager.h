@@ -56,6 +56,10 @@ public:
 	iPoint GetPos()const;
 	int	GetLayer()const;
 
+	void Move(float x, float y);
+	void ChangeTex(const char* path);
+	void ChangeRect(SDL_Rect r);
+
 private:
 	SDL_Texture* texture = nullptr;
 	SDL_Rect	 rect = { 0,0,0,0 };
@@ -71,6 +75,8 @@ public:
 	~CutsceneEntity();
 
 	Entity* GetEntity()const;
+	void SetNull();
+	void SetEntity(Entity* e);
 
 private:
 	Entity*	entity;
@@ -83,6 +89,8 @@ public:
 	~CutsceneMusic();
 
 	bool IsPlaying()const;
+
+	void Play();
 
 private:
 	bool playing = false;
@@ -97,6 +105,8 @@ public:
 	int GetID()const;
 	int GetLoops()const;
 
+	void Play();
+
 private:
 	int loops = 0;
 	int id = 0;
@@ -109,9 +119,11 @@ public:
 	~CutsceneText();
 
 	void SetText(const char* txt);
+	UI_Text* GetText()const;
+	void Move(float x, float y);
 
 private:
-	UI_Text* text;
+	UI_Text* text = nullptr;
 };
 
 //---------------------
@@ -136,24 +148,11 @@ class CutsceneAction
 public:
 	CutsceneAction(actions action, const char* name, int start_time, int duration = 0);
 
-	bool operator()(const CutsceneAction* a1, const CutsceneAction* a2)
-	{
-		return a1->start > a2->start;
-	}
-
 public:
 	string	element_name;
 	actions action = a_null;
 	int		start = -1;
 	int		duration = 0;
-};
-
-enum reference_type
-{
-	r_t_local,
-	r_t_global,
-	r_t_map,
-	r_t_null,
 };
 
 class CutSceneAction_Cmp
@@ -167,6 +166,14 @@ public:
 	}
 };
 
+enum reference_type
+{
+	r_t_local,
+	r_t_global,
+	r_t_map,
+	r_t_null,
+};
+
 class CutsceneMove : public CutsceneAction
 {
 public:
@@ -177,6 +184,8 @@ public:
 	BezierEasing*	bezier = nullptr;
 	iPoint			dest = NULLPOINT;
 	reference_type	reference = r_t_null;
+	iPoint			initial_pos = NULLPOINT;
+	bool			first_time = true;
 
 };
 
@@ -224,6 +233,8 @@ public:
 enum change_scene_effects
 {
 	c_s_e_fade,
+	c_s_e_circle,
+	c_s_e_star,
 	c_s_e_null,
 };
 
@@ -275,12 +286,17 @@ private:
 	void Load(const char* path);
 
 	elements_groups GetElementGroup(const char* ele)const;
+	CutsceneElement* GetElement(const char* ele)const;
 
 	void PerformActions(float dt);
+	
+	void ChangeScene();
+
+	void ClearScene();
 
 	// Load elements
 	void LoadMap(pugi::xml_node& node);
-	void LoadImage(pugi::xml_node& node);
+	void LoadCSImage(pugi::xml_node& node);
 	void LoadEntity(pugi::xml_node& node);
 	void LoadMusic(pugi::xml_node& node);
 	void LoadSoundEffect(pugi::xml_node& node);
@@ -295,6 +311,16 @@ private:
 	void LoadModify(pugi::xml_node& node);
 	void LoadChangeScene(pugi::xml_node& node);
 
+	//Perform Actions
+	void PerformMove(CutsceneElement* ele, CutsceneMove* move);
+	void PerformAction(CutsceneElement* ele);
+	void PerformPlay(CutsceneElement* ele);
+	void PerformStop(CutsceneElement* ele);
+	void PerformModify(CutsceneElement* ele, CutsceneAction* act);
+	void PerformEnable(CutsceneElement* ele);
+	void PerformDisable(CutsceneElement* ele);
+	void PerformChangeScene(CutsceneAction* act);
+
 public:
 	UI_Window*					gui_win = nullptr;
 
@@ -306,6 +332,16 @@ private:
 	std::list<CutsceneAction*>																active_actions;
 
 	j1Timer																					scene_timer;
+
+	//Change scene
+	j1Timer																					change_scene_timer;
+	bool																					change_scene = false;
+	int																						change_scene_duration = 0;
+	change_scene_effects																	change_scene_effect = c_s_e_null;
+	string																					new_scene;
+	bool																					changed = false;
+
+	
 };
 
 

@@ -15,22 +15,27 @@
       <music name="main_music" active="true" path="Audio/Music/guessing-game_house.ogg"/>
     </type>
     <type group="sound_effect">
-      <sound_effect name="hello_man" active="true" path="Audio/FX/hello_man.wav" loops="5"/>
+      <sound_effect name="hello_man" active="true" path="Audio/FX/hello_man.wav" loops="0"/>
     </type>
     <type group="text">
       <text preload="false" name="info_text" active="true" pos_x="50" pos_y="250" txt="this is a test"/>
     </type>
   </elements>
   <scene>
-    <act element="test_image" type="move" start="10" duration="2">
-      <move x="300" y="90" ref="global" bezier="true">
+    <act element="info_text" type="move" start="4" duration="5">
+      <move x="300" y="500" ref="global" bezier="true">
         <p1 x="1" y="0"/>
         <p2 x="0" y="1"/>
       </move>
     </act>
-    <act element="main_music" type="stop" start="15"/>
-    <act element="info_text" type="modify" start="12">
+    <act element="link" type="move" start="3" duration="0">
+      <move x="25" y="24" ref="map" bezier="false"/>
+    </act>
+    <act element="link" type="action" start="2" duration="0"/>
+    <act element="main_music" type="stop" start="5"/>
+    <act element="info_text" type="modify" start="7">
       <modify txt="this is not a test"/>
     </act>
+    <act element="info_text" type="disable" start="12"/>
   </scene>
 </file>

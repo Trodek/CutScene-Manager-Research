@@ -9,6 +9,7 @@
 #include "j1Gui.h"
 #include "j1Window.h"
 #include "j1Viewports.h"
+#include "p2Log.h"
 
 j1CutSceneManager::j1CutSceneManager()
 {
@@ -63,6 +64,10 @@ bool j1CutSceneManager::Update(float dt)
 	PerformActions(dt);
 
 	UpdateElements(dt);
+
+	if (change_scene)
+		ChangeScene();
+
 	return true;
 }
 
@@ -109,7 +114,7 @@ void j1CutSceneManager::Load(const char * path)
 		{
 			for (pugi::xml_node image = group.child("image"); image; image = image.next_sibling("image"))
 			{
-				LoadImage(image);
+				LoadCSImage(image);
 			}
 		}
 		else if (type == "entity")
@@ -156,6 +161,10 @@ void j1CutSceneManager::Load(const char * path)
 		{
 			LoadModify(act);
 		}
+		else if (type == "change_scene")
+		{
+			LoadChangeScene(act);
+		}
 		else
 		{
 			LoadAction(act);
@@ -175,8 +184,124 @@ elements_groups j1CutSceneManager::GetElementGroup(const char * ele) const
 	return e_g_null;
 }
 
+CutsceneElement * j1CutSceneManager::GetElement(const char * ele) const
+{
+	for (std::list<CutsceneElement*>::const_iterator e = elements.begin(); e != elements.end(); ++e)
+	{
+		if ((*e)->name == ele)
+			return *e;
+	}
+
+	return nullptr;
+}
+
 void j1CutSceneManager::PerformActions(float dt)
 {
+	for (std::list<CutsceneAction*>::iterator act = active_actions.begin(); act != active_actions.end(); ++act)
+	{
+		CutsceneElement* element = GetElement((*act)->element_name.c_str());
+
+		switch ((*act)->action)
+		{
+		case a_move:
+		{
+			CutsceneMove* move = static_cast<CutsceneMove*>(*act);
+
+			PerformMove(element, move);
+
+			break;
+		}
+		case a_action:
+			PerformAction(element);
+			break;
+		case a_play:
+			PerformPlay(element);
+			break;
+		case a_stop:
+			PerformStop(element);
+			break;
+		case a_modify:
+			PerformModify(element, *act);
+			break;
+		case a_enable:
+			PerformEnable(element);
+			break;
+		case a_disable:
+			PerformDisable(element);
+			break;
+		case a_change_scene:
+			PerformChangeScene(*act);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void j1CutSceneManager::ChangeScene()
+{
+	uint win_w, win_h;
+	App->win->GetWindowSize(win_w, win_h);
+
+	float rel_time = change_scene_timer.ReadSec() / (change_scene_duration/2);
+
+	switch (change_scene_effect)
+	{
+	case c_s_e_fade:
+		int alpha;
+
+		if (rel_time < 1)
+			alpha = 255 * rel_time;
+		else
+		{
+			if(!changed)
+			{
+				ClearScene();
+				Play(new_scene.c_str());
+				changed = true;
+			}
+			alpha = 255 - 255 * (rel_time - 1);
+		}
+
+		App->view->LayerDrawQuad({ 0,0,(int)win_w,(int)win_h }, 0, 0, 0, alpha, true, 200);
+		break;
+	case c_s_e_circle:
+		break;
+	case c_s_e_star:
+		break;
+	case c_s_e_null:
+		ClearScene();
+		Play(new_scene.c_str());
+		change_scene = false;
+		break;
+	default:
+		break;
+	}
+
+	if (rel_time >= 2)
+		change_scene = false;
+}
+
+void j1CutSceneManager::ClearScene()
+{
+	for (std::list<CutsceneElement*>::iterator it = elements.begin(); it != elements.end();)
+	{
+		RELEASE(*it);
+		it = elements.erase(it);
+	}
+
+	while (!remaining_actions.empty())
+	{
+		CutsceneAction* a = remaining_actions.top();
+		RELEASE(a);
+		remaining_actions.pop();
+	}
+
+	for (std::list<CutsceneAction*>::iterator it = active_actions.begin(); it != active_actions.end();)
+	{
+		RELEASE(*it);
+		it = active_actions.erase(it);
+	}
 
 }
 
@@ -200,7 +325,7 @@ void j1CutSceneManager::LoadMap(pugi::xml_node & node)
 	elements.push_back(m);
 }
 
-void j1CutSceneManager::LoadImage(pugi::xml_node & node)
+void j1CutSceneManager::LoadCSImage(pugi::xml_node & node)
 {
 	CutsceneImage* i = new CutsceneImage(e_g_image, node.attribute("path").as_string(), node.attribute("name").as_string(), node.attribute("active").as_bool(), { node.attribute("pos_x").as_int(),node.attribute("pos_y").as_int() },
 	{ node.attribute("rect_x").as_int(),node.attribute("rect_y").as_int(),node.attribute("rect_w").as_int(),node.attribute("rect_h").as_int() }, node.attribute("layer").as_int());
@@ -383,7 +508,259 @@ void j1CutSceneManager::LoadChangeScene(pugi::xml_node & node)
 
 	cs->path = node.child("change_scene").attribute("path").as_string();
 
+	string effect = node.child("change_scene").attribute("effect").as_string();
+
+	if (effect == "fade")
+		cs->effect = c_s_e_fade;
+	else if (effect == "circle")
+		cs->effect = c_s_e_circle;
+	else if (effect == "star")
+		cs->effect = c_s_e_star;
+	else
+		cs->effect = c_s_e_null;
+
 	remaining_actions.push(cs);
+}
+
+void j1CutSceneManager::PerformMove(CutsceneElement * ele, CutsceneMove * move)
+{
+	float rel_time = (scene_timer.ReadSec()-(float)move->start) / (float)move->duration;
+
+	LOG("t:%f", move->bezier->GetEasingProgress(rel_time));
+
+	switch (ele->group)
+	{
+	case e_g_image:
+	{
+		CutsceneImage* image = static_cast<CutsceneImage*>(ele);
+
+		if (move->first_time)
+		{
+			move->initial_pos = image->GetPos();
+			move->first_time = false;
+		}
+
+		int delta_x = move->dest.x -move->initial_pos.x;
+		int delta_y = move->dest.y -move->initial_pos.y;
+
+		image->Move(move->initial_pos.x + move->bezier->GetEasingProgress(rel_time)*delta_x, move->initial_pos.y + move->bezier->GetEasingProgress(rel_time)*delta_y);
+
+		break;
+	}
+	case e_g_entity:
+	{
+		CutsceneEntity* entity = static_cast<CutsceneEntity*>(ele);
+
+		switch (move->reference)
+		{
+		case r_t_local:
+			entity->GetEntity()->MoveToWorld({ entity->GetEntity()->GetMapPos().x + move->dest.x,entity->GetEntity()->GetMapPos().y + move->dest.y });
+			break;
+		case r_t_global:
+			entity->GetEntity()->MoveToWorld({ move->dest.x,move->dest.y });
+			break;
+		case r_t_map:
+			entity->GetEntity()->MoveToMap({ move->dest.x,move->dest.y });
+			break;
+		default:
+			break;
+		}
+
+		break;
+	}	
+	case e_g_text:
+	{
+		CutsceneText* text = static_cast<CutsceneText*>(ele);
+
+		if (move->first_time)
+		{
+			move->initial_pos = text->GetText()->GetPos();
+			move->first_time = false;
+		}
+
+		int delta_x = move->dest.x - move->initial_pos.x;
+		int delta_y = move->dest.y - move->initial_pos.y;
+
+		text->Move(move->initial_pos.x + move->bezier->GetEasingProgress(rel_time)*delta_x, move->initial_pos.y + move->bezier->GetEasingProgress(rel_time)*delta_y);
+
+		break;
+	}
+	default:
+		break;
+	}
+
+
+}
+
+void j1CutSceneManager::PerformAction(CutsceneElement * ele)
+{
+	//Just entities can do actions now
+	if (ele->group == e_g_entity)
+	{
+		CutsceneEntity* e = static_cast<CutsceneEntity*>(ele);
+
+		e->GetEntity()->DoAction();
+	}
+}
+
+void j1CutSceneManager::PerformPlay(CutsceneElement * ele)
+{
+	//Just music and sound effect can be played
+	if (ele->group == e_g_music)
+	{
+		CutsceneMusic* music = static_cast<CutsceneMusic*>(ele);
+
+		music->Play();
+	}
+	else if (ele->group == e_g_sound_effect)
+	{
+		CutsceneSoundEffect* fx = static_cast<CutsceneSoundEffect*>(ele);
+
+		fx->Play();
+	}
+
+}
+
+void j1CutSceneManager::PerformStop(CutsceneElement * ele)
+{
+	//Just Music can be stoped now
+	if (ele->group == e_g_music)
+	{
+		App->audio->StopMusic();
+	}
+
+}
+
+void j1CutSceneManager::PerformModify(CutsceneElement * ele, CutsceneAction * act)
+{
+	//Just entity, image and text can be modified
+	if (ele->group == e_g_entity)
+	{
+		CutsceneEntity* e = static_cast<CutsceneEntity*>(ele);
+		CutsceneModifyEntity* modify = static_cast<CutsceneModifyEntity*>(act);
+
+		switch (modify->entity_action)
+		{
+		case e_a_kill:
+			if (e->GetEntity() != nullptr)
+			{
+				App->entity->DeleteEntity(e->GetEntity());
+				e->SetNull();
+			}
+			break;
+		case e_a_spawn:
+			if (e->GetEntity() == nullptr)
+			{
+				e->SetEntity(App->entity->CreateEntity(modify->pos, e->path.c_str()));
+			}
+			break;
+		case e_a_change_pos:
+			e->GetEntity()->MoveToWorld(modify->pos); //should be a teleport to the position
+			break;
+		default:
+			break;
+		}
+	}
+	else if (ele->group == e_g_image)
+	{
+		CutsceneImage* i = static_cast<CutsceneImage*>(ele);
+		CutsceneModifyImage* modify = static_cast<CutsceneModifyImage*>(act);
+
+		if (modify->var == "tex")
+			i->ChangeTex(modify->path.c_str());
+		else if (modify->var == "rect")
+			i->ChangeRect(modify->rect);
+		else if (modify->var == "both")
+		{
+			i->ChangeTex(modify->path.c_str());
+			i->ChangeRect(modify->rect);
+		}
+			
+	}
+	else if (ele->group == e_g_text)
+	{
+		CutsceneText* t = static_cast<CutsceneText*>(ele);
+		CutsceneModifyText* modify = static_cast<CutsceneModifyText*>(act);
+
+		t->SetText(modify->txt.c_str());
+	}
+}
+
+void j1CutSceneManager::PerformEnable(CutsceneElement * ele)
+{
+	switch (ele->group)
+	{
+	case e_g_map:
+		ele->active = true;
+		break;
+	case e_g_image:
+		ele->active = true;
+		break;
+	case e_g_entity:
+	{
+		CutsceneEntity* e = static_cast<CutsceneEntity*>(ele);
+
+		e->active = true;
+		e->GetEntity()->active = true;
+
+		break;
+	}
+	case e_g_text:
+	{
+		CutsceneText* t = static_cast<CutsceneText*>(ele);
+
+		t->active = true;
+		t->GetText()->enabled = true;
+
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void j1CutSceneManager::PerformDisable(CutsceneElement * ele)
+{
+	switch (ele->group)
+	{
+	case e_g_map:
+		ele->active = false;
+		break;
+	case e_g_image:
+		ele->active = false;
+		break;
+	case e_g_entity:
+	{
+		CutsceneEntity* e = static_cast<CutsceneEntity*>(ele);
+
+		e->active = false;
+		e->GetEntity()->active = false;
+
+		break;
+	}
+	case e_g_text:
+	{
+		CutsceneText* t = static_cast<CutsceneText*>(ele);
+
+		t->active = false;
+		t->GetText()->enabled = false;
+
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void j1CutSceneManager::PerformChangeScene(CutsceneAction * act)
+{
+	CutsceneChangeScene* cs = static_cast<CutsceneChangeScene*>(act);
+
+	change_scene = true;
+	change_scene_duration = cs->duration;
+	change_scene_effect = cs->effect;
+	new_scene = cs->path;
+	change_scene_timer.Start();
 }
 
 //-----------------------
@@ -433,6 +810,19 @@ int CutsceneImage::GetLayer() const
 {
 	return layer;
 }
+void CutsceneImage::Move(float x, float y)
+{
+	pos.x = x;
+	pos.y = y;
+}
+void CutsceneImage::ChangeTex(const char * path)
+{
+	texture = App->tex->LoadTexture(path);
+}
+void CutsceneImage::ChangeRect(SDL_Rect r)
+{
+	rect = r;
+}
 //--------------------
 
 //-----------------------
@@ -453,6 +843,14 @@ CutsceneEntity::~CutsceneEntity()
 Entity * CutsceneEntity::GetEntity() const
 {
 	return entity;
+}
+void CutsceneEntity::SetNull()
+{
+	entity = nullptr;
+}
+void CutsceneEntity::SetEntity(Entity * e)
+{
+	entity = e;
 }
 //----------------------
 
@@ -477,6 +875,11 @@ bool CutsceneMusic::IsPlaying() const
 {
 	return playing;
 }
+void CutsceneMusic::Play()
+{
+	App->audio->PlayMusic(path.c_str());
+	playing = true;
+}
 //------------------------
 
 //-----------------------
@@ -499,6 +902,10 @@ int CutsceneSoundEffect::GetLoops() const
 {
 	return loops;
 }
+void CutsceneSoundEffect::Play()
+{
+	App->audio->PlayFx(id, loops);
+}
 //----------------
 
 //-----------------------
@@ -517,6 +924,14 @@ CutsceneText::~CutsceneText()
 void CutsceneText::SetText(const char * txt)
 {
 	text->SetText(txt);
+}
+UI_Text * CutsceneText::GetText() const
+{
+	return text;
+}
+void CutsceneText::Move(float x, float y)
+{
+	text->SetPos({ (int)x,(int)y });
 }
 //---------------------
 

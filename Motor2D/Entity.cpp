@@ -234,32 +234,36 @@ void Entity::MoveUpRight(float speed)
 {
 	fPoint s(speed * cos(DEGTORAD * 45), speed * sin(DEGTORAD * 45));
 	game_object->SetPos({ game_object->fGetPos().x + s.x, game_object->fGetPos().y - s.y });
-	side = f_s_right;
+	side = f_s_up;
 	flip = false;
+	game_object->SetAnimation("run_up");
 }
 
 void Entity::MoveDownRight(float speed)
 {
 	fPoint s(speed * cos(DEGTORAD * 45), speed * sin(DEGTORAD * 45));
 	game_object->SetPos({ game_object->fGetPos().x + s.x, game_object->fGetPos().y + s.y });
-	side = f_s_right;
+	side = f_s_down;
 	flip = false;
+	game_object->SetAnimation("run_down");
 }
 
 void Entity::MoveUpLeft(float speed)
 {
 	fPoint s(speed * cos(DEGTORAD * 45), speed * sin(DEGTORAD * 45));
 	game_object->SetPos({ game_object->fGetPos().x - s.x, game_object->fGetPos().y - s.y });
-	side = f_s_left;
+	side = f_s_up;
 	flip = true;
+	game_object->SetAnimation("run_up");
 }
 
 void Entity::MoveDownLeft(float speed)
 {
 	fPoint s(speed * cos(DEGTORAD * 45), speed * sin(DEGTORAD * 45));
 	game_object->SetPos({ game_object->fGetPos().x - s.x, game_object->fGetPos().y + s.y });
-	side = f_s_left;
+	side = f_s_down;
 	flip = false;
+	game_object->SetAnimation("run_down");
 }
 
 void Entity::ActionUp()
@@ -353,6 +357,7 @@ void Entity::DoMovement()
 	else
 	{
 		state = e_s_idle;
+		target_pos = path[path_index - 1];
 		path.clear();
 	}
 }

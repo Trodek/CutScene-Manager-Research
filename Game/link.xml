@@ -63,5 +63,5 @@
        <rect x = "187" y = "395" w = "100" h = "45"/>
      </anim>
    </animations>
-  <stats hp="120" speed="160"/>
+  <stats hp="120" speed="100"/>
 </file>
