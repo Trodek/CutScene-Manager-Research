@@ -88,6 +88,12 @@
     <ClCompile Include="j1CutSceneManager.cpp">
       <Filter>Engine\7. CutScene Manager ==\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="BezierEasing.cpp">
+      <Filter>Engine\2. Components ======</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Engine\3. Scenes ==========\PlayScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -204,6 +210,12 @@
     <ClInclude Include="j1CutSceneManager.h">
       <Filter>Engine\7. CutScene Manager ==\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Engine\3. Scenes ==========\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierEasing.h">
+      <Filter>Engine\2. Components ======</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -242,6 +254,9 @@
     <Filter Include="Engine\7. CutScene Manager ==\Editor">
       <UniqueIdentifier>{cf105915-2695-4b34-9c70-a307b8fb11eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\3. Scenes ==========\PlayScene">
+      <UniqueIdentifier>{a2c585f9-7525-4089-90c5-27d20007d0c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\link.xml">
@@ -252,6 +267,9 @@
     </Xml>
     <Xml Include="..\Game\zelda.xml">
       <Filter>Engine\4. Entities ==========\Entities xmls</Filter>
+    </Xml>
+    <Xml Include="..\Game\test_cutscene.xml">
+      <Filter>Engine\7. CutScene Manager ==\Manager</Filter>
     </Xml>
   </ItemGroup>
 </Project>

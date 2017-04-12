@@ -28,6 +28,9 @@ bool j1Viewports::Start()
 
 	App->win->GetWindowSize(win_w, win_h);
 
+	camera1.x = 0;
+	camera1.y = 0;
+
 	return ret;
 }
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<file>
+  <elements>
+    <type group="map">
+      <map preload ="false" name="map" active="true" path="cut_scene_map.tmx"/>
+    </type>
+    <type group="image">
+      <image name="test_image" active="true" path="textures/Base_entity.png" pos_x ="20" pos_y="60" rect_x="0" rect_y="0" rect_w="90" rect_h="90" layer="2"/>
+    </type>
+    <type group="entity">
+      <entity name ="link" active="true" path="link.xml" pos_x="50" pos_y="50"/>
+    </type>
+    <type group="music">
+      <music name="main_music" active="true" path="Audio/Music/guessing-game_house.ogg"/>
+    </type>
+    <type group="sound_effect">
+      <sound_effect name="hello_man" active="true" path="Audio/FX/hello_man.wav" loops="5"/>
+    </type>
+    <type group="text">
+      <text preload="false" name="info_text" active="true" pos_x="50" pos_y="250" txt="this is a test"/>
+    </type>
+  </elements>
+  <scene>
+    <act element="test_image" type="move" start="10" duration="2">
+      <move x="300" y="90" ref="global" bezier="true">
+        <p1 x="1" y="0"/>
+        <p2 x="0" y="1"/>
+      </move>
+    </act>
+    <act element="main_music" type="stop" start="15"/>
+    <act element="info_text" type="modify" start="12">
+      <modify txt="this is not a test"/>
+    </act>
+  </scene>
+</file>

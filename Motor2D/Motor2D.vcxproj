@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="BezierEasing.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -103,10 +104,12 @@
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="Parallax.cpp" />
+    <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="BezierEasing.h" />
     <ClInclude Include="CollisionFilters.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Functions.h" />
@@ -141,6 +144,7 @@
     <ClInclude Include="p2PQueue.h" />
     <ClInclude Include="p2SString.h" />
     <ClInclude Include="Parallax.h" />
+    <ClInclude Include="PlayScene.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Scene.h" />
@@ -148,6 +152,9 @@
   <ItemGroup>
     <Xml Include="..\Game\link.xml" />
     <Xml Include="..\Game\minion.xml" />
+    <Xml Include="..\Game\test_cutscene.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="..\Game\zelda.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

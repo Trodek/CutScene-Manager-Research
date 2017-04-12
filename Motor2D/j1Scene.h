@@ -8,18 +8,7 @@
 
 struct SDL_Texture;
 class MenuScene; 
-class MainScene;
-class CharacterSelectionScene; 
-class TeamSelectScene;
-
-struct player_info
-{
-	uint			gamepad = 5;
-	uint			viewport = 5;
-	uint			team = 3;
-	uint			player = 5;
-	entity_name		character = e_n_null;
-};
+class PlayScene;
 
 class j1Scene : public j1Module
 {
@@ -66,11 +55,7 @@ public:
 public:
 	// Scenes
 	MenuScene*					 menu_scene = nullptr; 
-	MainScene*					 main_scene = nullptr;
-	CharacterSelectionScene*	 charselect_screen = nullptr; 
-	TeamSelectScene*			 team_select = nullptr;
-
-	player_info					 players[4];
+	PlayScene*					 play_scene = nullptr;
 
 private:
 	// Scenes list
