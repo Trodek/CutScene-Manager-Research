@@ -27,11 +27,6 @@ bool j1CutSceneManager::Awake(pugi::xml_node &)
 
 bool j1CutSceneManager::Start()
 {
-	uint w, h;
-	App->win->GetWindowSize(w, h);
-
-	gui_win = App->gui->UI_CreateWin({ 0,0 }, w, h, 0, false);
-
 	return true;
 }
 
@@ -78,6 +73,8 @@ bool j1CutSceneManager::PostUpdate()
 
 bool j1CutSceneManager::CleanUp()
 {
+	ClearScene();
+
 	return true;
 }
 
@@ -286,6 +283,13 @@ void j1CutSceneManager::ClearScene()
 {
 	for (std::list<CutsceneElement*>::iterator it = elements.begin(); it != elements.end();)
 	{
+		if ((*it)->group == e_g_map)
+			App->map->CleanUp();
+		if ((*it)->group == e_g_entity)
+		{
+			CutsceneEntity* entity = static_cast<CutsceneEntity*>(*it);
+			App->entity->DeleteEntity(entity->GetEntity());
+		}
 		RELEASE(*it);
 		it = elements.erase(it);
 	}
@@ -504,7 +508,7 @@ void j1CutSceneManager::LoadModify(pugi::xml_node & node)
 
 void j1CutSceneManager::LoadChangeScene(pugi::xml_node & node)
 {
-	CutsceneChangeScene* cs = new CutsceneChangeScene(a_move, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
+	CutsceneChangeScene* cs = new CutsceneChangeScene(a_change_scene, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
 
 	cs->path = node.child("change_scene").attribute("path").as_string();
 
@@ -757,6 +761,7 @@ void j1CutSceneManager::PerformChangeScene(CutsceneAction * act)
 	CutsceneChangeScene* cs = static_cast<CutsceneChangeScene*>(act);
 
 	change_scene = true;
+	changed = false;
 	change_scene_duration = cs->duration;
 	change_scene_effect = cs->effect;
 	new_scene = cs->path;
@@ -914,11 +919,23 @@ void CutsceneSoundEffect::Play()
 
 CutsceneText::CutsceneText(elements_groups group, const char * path, const char* name, bool active, iPoint pos) : CutsceneElement(group, path, name, active)
 {
+	if (App->cutscene->gui_win == nullptr)
+	{
+		uint win_w, win_h;
+		App->win->GetWindowSize(win_w, win_h);
+
+		App->cutscene->gui_win = App->gui->UI_CreateWin({ 0,0 }, win_w, win_h, 0, false);
+	}
 	text = App->cutscene->gui_win->CreateText(pos, App->font->default);
 }
 
 CutsceneText::~CutsceneText()
 {
+	if (App->cutscene->gui_win != nullptr)
+	{
+		App->gui->DeleteElement(App->cutscene->gui_win); 
+		App->cutscene->gui_win = nullptr;
+	}
 }
 
 void CutsceneText::SetText(const char * txt)

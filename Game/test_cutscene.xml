@@ -37,5 +37,8 @@
       <modify txt="this is not a test"/>
     </act>
     <act element="info_text" type="disable" start="12"/>
+    <act type="change_scene" start="5" duration="4">
+      <change_scene effect="fade" path="test_cutscene.xml"/>
+    </act>
   </scene>
 </file>
