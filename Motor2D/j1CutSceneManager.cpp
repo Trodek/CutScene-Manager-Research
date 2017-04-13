@@ -11,6 +11,10 @@
 #include "j1Viewports.h"
 #include "p2Log.h"
 
+#define MASK_W  128
+#define MASK_H  72
+#define MASK_SIZE 15.0f
+
 j1CutSceneManager::j1CutSceneManager()
 {
 	name = "cutscene";
@@ -27,6 +31,9 @@ bool j1CutSceneManager::Awake(pugi::xml_node &)
 
 bool j1CutSceneManager::Start()
 {
+	circle_mask_tex = App->tex->LoadTexture("textures/circle_mask.png");
+	star_mask_tex = App->tex->LoadTexture("textures/star_mask.png");
+
 	return true;
 }
 
@@ -263,9 +270,99 @@ void j1CutSceneManager::ChangeScene()
 		App->view->LayerDrawQuad({ 0,0,(int)win_w,(int)win_h }, 0, 0, 0, alpha, true, 200);
 		break;
 	case c_s_e_circle:
+	{
+		float size = MASK_SIZE;
+		iPoint image_pos = { (int)win_w / 2,(int)win_h / 2 };
+		int margin_w, margin_h;
+
+		LOG("x:%d, y:%d", image_pos.x, image_pos.y);
+
+		if (rel_time < 1)
+		{
+			size -= size*rel_time;
+		}
+		else
+		{
+			if (!changed)
+			{
+				ClearScene();
+				Play(new_scene.c_str());
+				changed = true;
+			}
+			size = 0.0f + size*(rel_time - 1);
+		}
+
+		int act_w = MASK_W*size;
+		int act_h = MASK_H*size;
+
+		margin_w = (win_w - act_w) / 2;
+		margin_h = (win_h - act_h) / 2;
+
+		image_pos.x -= act_w / 2;
+		image_pos.y -= act_h / 2;
+		image_pos.x /= size;
+		image_pos.y /= size;
+
+		//draw mask
+		App->view->LayerBlit(200, circle_mask_tex, image_pos, { 0,0,MASK_W,MASK_H }, size, false);
+
+		//draw margins
+		if (size < 10) {
+			App->view->LayerDrawQuad({ 0,0,margin_w,(int)win_h }, 0, 0, 0, 255, true);
+			App->view->LayerDrawQuad({ 0,0,(int)win_w,margin_h }, 0, 0, 0, 255, true);
+			App->view->LayerDrawQuad({ (int)win_w - margin_w - (int)size - 1,0,margin_w + (int)size + 1,(int)win_h }, 0, 0, 0, 255, true);
+			App->view->LayerDrawQuad({ 0,(int)win_h - margin_h - (int)size - 1,(int)win_w,margin_h + (int)size + 1 }, 0, 0, 0, 255, true);
+		}
+
 		break;
+	}
 	case c_s_e_star:
+	{
+		float size = MASK_SIZE*2;
+		iPoint image_pos = { (int)win_w / 2,(int)win_h / 2 };
+		int margin_w, margin_h;
+
+		LOG("x:%d, y:%d", image_pos.x, image_pos.y);
+
+		if (rel_time < 1)
+		{
+			size -= size*rel_time;
+		}
+		else
+		{
+			if (!changed)
+			{
+				ClearScene();
+				Play(new_scene.c_str());
+				changed = true;
+			}
+			size = 0.0f + size*(rel_time - 1);
+		}
+
+		int act_w = MASK_W*size;
+		int act_h = MASK_H*size;
+
+		margin_w = (win_w - act_w) / 2;
+		margin_h = (win_h - act_h) / 2;
+
+		image_pos.x -= act_w / 2;
+		image_pos.y -= act_h / 2;
+		image_pos.x /= size;
+		image_pos.y /= size;
+
+		//draw mask
+		App->view->LayerBlit(200, star_mask_tex, image_pos, { 0,0,MASK_W,MASK_H }, size, false);
+
+		//draw margins
+		if (size < 10) {
+			App->view->LayerDrawQuad({ 0,0,margin_w,(int)win_h }, 0, 0, 0, 255, true);
+			App->view->LayerDrawQuad({ 0,0,(int)win_w,margin_h }, 0, 0, 0, 255, true);
+			App->view->LayerDrawQuad({ (int)win_w - margin_w - (int)size - 1,0,margin_w + (int)size + 1,(int)win_h }, 0, 0, 0, 255, true);
+			App->view->LayerDrawQuad({ 0,(int)win_h - margin_h - (int)size - 1,(int)win_w,margin_h + (int)size + 1 }, 0, 0, 0, 255, true);
+		}
+
 		break;
+	}
 	case c_s_e_null:
 		ClearScene();
 		Play(new_scene.c_str());
@@ -529,8 +626,6 @@ void j1CutSceneManager::LoadChangeScene(pugi::xml_node & node)
 void j1CutSceneManager::PerformMove(CutsceneElement * ele, CutsceneMove * move)
 {
 	float rel_time = (scene_timer.ReadSec()-(float)move->start) / (float)move->duration;
-
-	LOG("t:%f", move->bezier->GetEasingProgress(rel_time));
 
 	switch (ele->group)
 	{

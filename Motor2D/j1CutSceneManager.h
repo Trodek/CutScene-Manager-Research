@@ -341,7 +341,8 @@ private:
 	string																					new_scene;
 	bool																					changed = false;
 
-	
+	SDL_Texture*																			circle_mask_tex = nullptr;
+	SDL_Texture*																			star_mask_tex = nullptr;
 };
 
 
