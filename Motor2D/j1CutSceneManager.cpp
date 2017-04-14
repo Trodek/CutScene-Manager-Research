@@ -203,41 +203,52 @@ void j1CutSceneManager::PerformActions(float dt)
 {
 	for (std::list<CutsceneAction*>::iterator act = active_actions.begin(); act != active_actions.end(); ++act)
 	{
-		CutsceneElement* element = GetElement((*act)->element_name.c_str());
-
-		switch ((*act)->action)
+		if ((*act)->element_name == "camera")
 		{
-		case a_move:
-		{
-			CutsceneMove* move = static_cast<CutsceneMove*>(*act);
-
-			PerformMove(element, move);
-
-			break;
+			if ((*act)->action == a_move)
+			{
+				CutsceneMove* move = static_cast<CutsceneMove*>(*act);
+				MoveCamera(move);
+			}
 		}
-		case a_action:
-			PerformAction(element);
-			break;
-		case a_play:
-			PerformPlay(element);
-			break;
-		case a_stop:
-			PerformStop(element);
-			break;
-		case a_modify:
-			PerformModify(element, *act);
-			break;
-		case a_enable:
-			PerformEnable(element);
-			break;
-		case a_disable:
-			PerformDisable(element);
-			break;
-		case a_change_scene:
-			PerformChangeScene(*act);
-			break;
-		default:
-			break;
+		else
+		{
+			CutsceneElement* element = GetElement((*act)->element_name.c_str());
+
+			switch ((*act)->action)
+			{
+			case a_move:
+			{
+				CutsceneMove* move = static_cast<CutsceneMove*>(*act);
+
+				PerformMove(element, move);
+
+				break;
+			}
+			case a_action:
+				PerformAction(element);
+				break;
+			case a_play:
+				PerformPlay(element);
+				break;
+			case a_stop:
+				PerformStop(element);
+				break;
+			case a_modify:
+				PerformModify(element, *act);
+				break;
+			case a_enable:
+				PerformEnable(element);
+				break;
+			case a_disable:
+				PerformDisable(element);
+				break;
+			case a_change_scene:
+				PerformChangeScene(*act);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }
@@ -355,10 +366,10 @@ void j1CutSceneManager::ChangeScene()
 
 		//draw margins
 		if (size < 10) {
-			App->view->LayerDrawQuad({ 0,0,margin_w,(int)win_h }, 0, 0, 0, 255, true);
-			App->view->LayerDrawQuad({ 0,0,(int)win_w,margin_h }, 0, 0, 0, 255, true);
-			App->view->LayerDrawQuad({ (int)win_w - margin_w - (int)size - 1,0,margin_w + (int)size + 1,(int)win_h }, 0, 0, 0, 255, true);
-			App->view->LayerDrawQuad({ 0,(int)win_h - margin_h - (int)size - 1,(int)win_w,margin_h + (int)size + 1 }, 0, 0, 0, 255, true);
+			App->view->LayerDrawQuad({ 0,0,margin_w,(int)win_h }, 0, 0, 0, 255, true, 200);
+			App->view->LayerDrawQuad({ 0,0,(int)win_w,margin_h }, 0, 0, 0, 255, true, 200);
+			App->view->LayerDrawQuad({ (int)win_w - margin_w - (int)size - 1,0,margin_w + (int)size + 1,(int)win_h }, 0, 0, 0, 255, true, 200);
+			App->view->LayerDrawQuad({ 0,(int)win_h - margin_h - (int)size - 1,(int)win_w,margin_h + (int)size + 1 }, 0, 0, 0, 255, true, 200);
 		}
 
 		break;
@@ -403,6 +414,8 @@ void j1CutSceneManager::ClearScene()
 		RELEASE(*it);
 		it = active_actions.erase(it);
 	}
+
+	App->view->SetCamera(0, 0);
 
 }
 
@@ -861,6 +874,22 @@ void j1CutSceneManager::PerformChangeScene(CutsceneAction * act)
 	change_scene_effect = cs->effect;
 	new_scene = cs->path;
 	change_scene_timer.Start();
+}
+
+void j1CutSceneManager::MoveCamera(CutsceneMove * move)
+{
+	float rel_time = (scene_timer.ReadSec() - (float)move->start) / (float)move->duration;
+
+	if (move->first_time)
+	{
+		move->initial_pos = App->view->camera1;
+		move->first_time = false;
+	}
+
+	int delta_x = -move->dest.x - move->initial_pos.x;
+	int delta_y = -move->dest.y - move->initial_pos.y;
+
+	App->view->SetCamera(move->initial_pos.x + move->bezier->GetEasingProgress(rel_time)*delta_x, move->initial_pos.y + move->bezier->GetEasingProgress(rel_time)*delta_y);
 }
 
 //-----------------------

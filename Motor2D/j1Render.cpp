@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Viewports.h"
 
 #define VSYNC true
 
@@ -197,8 +198,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, float _
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)(camera.x + rect.x * scale);
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.x = (int)(-App->view->camera1.x + rect.x * scale);
+		rec.y = (int)(-App->view->camera1.y + rect.y * scale);
 		rec.w *= scale;
 		rec.h *= scale;
 	}

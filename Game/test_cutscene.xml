@@ -22,7 +22,7 @@
     </type>
   </elements>
   <scene>
-    <act element="info_text" type="move" start="4" duration="5">
+    <act element="camera" type="move" start="4" duration="5">
       <move x="300" y="500" ref="global" bezier="true">
         <p1 x="1" y="0"/>
         <p2 x="0" y="1"/>
@@ -37,7 +37,7 @@
       <modify txt="this is not a test"/>
     </act>
     <act element="info_text" type="disable" start="12"/>
-    <act type="change_scene" start="5" duration="4">
+    <act type="change_scene" start="15" duration="4">
       <change_scene effect="circle" path="test_cutscene.xml"/>
     </act>
   </scene>

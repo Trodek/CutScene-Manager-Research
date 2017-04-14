@@ -320,6 +320,7 @@ private:
 	void PerformEnable(CutsceneElement* ele);
 	void PerformDisable(CutsceneElement* ele);
 	void PerformChangeScene(CutsceneAction* act);
+	void MoveCamera(CutsceneMove* move);
 
 public:
 	UI_Window*					gui_win = nullptr;

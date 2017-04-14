@@ -85,14 +85,14 @@
     <ClCompile Include="j1XMLLoader.cpp">
       <Filter>Engine\1. Modules =========</Filter>
     </ClCompile>
-    <ClCompile Include="j1CutSceneManager.cpp">
-      <Filter>Engine\7. CutScene Manager ==\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="BezierEasing.cpp">
       <Filter>Engine\2. Components ======</Filter>
     </ClCompile>
     <ClCompile Include="PlayScene.cpp">
       <Filter>Engine\3. Scenes ==========\PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="j1CutSceneManager.cpp">
+      <Filter>Engine\7. CutScene Manager ==</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -207,14 +207,14 @@
     <ClInclude Include="j1XMLLoader.h">
       <Filter>Engine\1. Modules =========</Filter>
     </ClInclude>
-    <ClInclude Include="j1CutSceneManager.h">
-      <Filter>Engine\7. CutScene Manager ==\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="PlayScene.h">
       <Filter>Engine\3. Scenes ==========\PlayScene</Filter>
     </ClInclude>
     <ClInclude Include="BezierEasing.h">
       <Filter>Engine\2. Components ======</Filter>
+    </ClInclude>
+    <ClInclude Include="j1CutSceneManager.h">
+      <Filter>Engine\7. CutScene Manager ==</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -248,12 +248,6 @@
     <Filter Include="Engine\7. CutScene Manager ==">
       <UniqueIdentifier>{8270f4e1-1f3a-470a-b325-bd2ce1e37ac5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\7. CutScene Manager ==\Manager">
-      <UniqueIdentifier>{3da6143a-185e-4781-9f0a-1d0e8a315de2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\7. CutScene Manager ==\Editor">
-      <UniqueIdentifier>{cf105915-2695-4b34-9c70-a307b8fb11eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\3. Scenes ==========\PlayScene">
       <UniqueIdentifier>{a2c585f9-7525-4089-90c5-27d20007d0c0}</UniqueIdentifier>
     </Filter>
@@ -269,7 +263,7 @@
       <Filter>Engine\4. Entities ==========\Entities xmls</Filter>
     </Xml>
     <Xml Include="..\Game\test_cutscene.xml">
-      <Filter>Engine\7. CutScene Manager ==\Manager</Filter>
+      <Filter>Engine\7. CutScene Manager ==</Filter>
     </Xml>
   </ItemGroup>
 </Project>
