@@ -34,17 +34,7 @@ bool MenuScene::Start()
 	play_text = menu_window->CreateText(iPoint(screen.w/2 - 50, 160), App->font->default);
 	play_text->SetText("Play Test");
 	play_text->click_through = true;
-
-	// ---------
-
-	// Editor -
-	editor_button = menu_window->CreateButton(iPoint(screen.w/2 - 110, 220), 223, 60, false);
-	editor_button->AddImage("idle", { 128, 52, 220, 55 });
-	editor_button->SetImage("idle");
-
-	editor_text = menu_window->CreateText(iPoint(screen.w/2 - 40, 230), App->font->default);
-	editor_text->SetText("Editor");
-	editor_text->click_through = true;
+	// --------
 
 	return true;
 }

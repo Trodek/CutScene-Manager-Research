@@ -33,10 +33,8 @@ public:
 private:
 
 	UI_Button*		   play_button = nullptr;
-	UI_Button*		   editor_button = nullptr; 
 
 	UI_Text*		   play_text = nullptr; 
-	UI_Text*		   editor_text = nullptr;
 
 };
 
