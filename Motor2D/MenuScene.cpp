@@ -8,6 +8,7 @@
 #include "j1Map.h"
 #include "j1Pathfinding.h"
 #include "PlayScene.h"
+#include "j1CutSceneManager.h"
 
 MenuScene::MenuScene()
 {
@@ -48,7 +49,7 @@ bool MenuScene::Update(float dt)
 {
 	if (play_button->MouseClickEnterLeft())
 	{
-		App->scene->ChangeScene(App->scene->play_scene);
+		App->cutscene->Play("test_cutscene.xml", this);
 	}
 
 	return true;

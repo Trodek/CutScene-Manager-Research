@@ -2051,7 +2051,7 @@ bool UI_ColoredRect::update()
 	if (!enabled)
 		return false;
 
-	App->render->DrawQuad(rect, color.r, color.g, color.b, -1.0f, color.a, filled);
+	App->render->DrawQuad(rect, color.r, color.g, color.b, -1.0f, color.a, filled, false);
 
 	return true;
 }

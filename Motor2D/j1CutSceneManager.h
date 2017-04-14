@@ -9,6 +9,7 @@
 
 class Entity;
 class UI_Text;
+class Scene;
 
 enum elements_groups
 {
@@ -230,6 +231,16 @@ public:
 
 };
 
+class CutsceneModifyCamera : public CutsceneAction
+{
+public:
+	CutsceneModifyCamera(actions action, const char* name, int start_time, int duration = 0);
+
+public:
+	iPoint position;
+
+};
+
 enum change_scene_effects
 {
 	c_s_e_fade,
@@ -279,7 +290,8 @@ public:
 
 	int GetNextID() const;
 
-	void Play(const char* path);
+	void Play(const char* path, Scene* next_scene = nullptr);
+	bool HasFinished()const;
 
 private:
 
@@ -344,6 +356,9 @@ private:
 
 	SDL_Texture*																			circle_mask_tex = nullptr;
 	SDL_Texture*																			star_mask_tex = nullptr;
+
+	bool																					finished = false;
+	Scene*																					next_scene = nullptr;
 };
 
 

@@ -3,11 +3,11 @@
 <file>
   <size w="34" h="48"/>
   <animations texture ="textures/zelda_spritesheet.png">
-    <anim speed = "5" name = "walk_up" loop = "true">
+    <anim speed = "5" name = "run_up" loop = "true">
       <rect x = "266" y = "2" w = "34" h = "48"/>
       <rect x = "302" y = "2" w = "34" h = "48"/>
     </anim>
-    <anim speed = "5" name = "walk_down" loop = "true">
+    <anim speed = "5" name = "run_down" loop = "true">
       <rect x = "188" y = "2" w = "36" h = "48"/>
       <rect x = "226" y = "2" w = "36" h = "48"/>
     </anim>
@@ -15,7 +15,7 @@
       <rect x = "118" y = "2" w = "32" h = "48"/>
       <rect x = "152" y = "2" w = "32" h = "48"/>
     </anim>
-    <anim speed = "5" name = "walk_right" loop = "true">
+    <anim speed = "5" name = "run_lateral" loop = "true">
       <rect x = "46" y = "2" w = "32" h = "48"/>
       <rect x = "80" y = "2" w = "32" h = "48"/>
     </anim>
@@ -25,7 +25,7 @@
     <anim speed = "5" name = "idle_down" loop = "true">
       <rect x = "2" y = "2" w = "44" h = "48"/>
     </anim>
-    <anim speed = "10" name = "idle_right" loop = "true">
+    <anim speed = "10" name = "idle_lateral" loop = "true">
       <rect x = "46" y = "2" w = "32" h = "48"/>
     </anim>
     <anim speed = "10" name = "idle_left" loop = "true">

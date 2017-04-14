@@ -1,5 +1,4 @@
 #include "PlayScene.h"
-#include "j1CutSceneManager.h"
 
 PlayScene::PlayScene()
 {
@@ -11,8 +10,6 @@ PlayScene::~PlayScene()
 
 bool PlayScene::Start()
 {
-	App->cutscene->Play("test_cutscene.xml");
-
 	return true;
 }
 

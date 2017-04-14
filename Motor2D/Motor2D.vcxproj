@@ -152,6 +152,7 @@
   <ItemGroup>
     <Xml Include="..\Game\link.xml" />
     <Xml Include="..\Game\minion.xml" />
+    <Xml Include="..\Game\navi.xml" />
     <Xml Include="..\Game\test_cutscene.xml">
       <SubType>Designer</SubType>
     </Xml>

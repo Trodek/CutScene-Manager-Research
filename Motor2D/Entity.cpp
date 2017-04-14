@@ -37,6 +37,8 @@ Entity::Entity(iPoint pos, const char* xml_path)
 
 Entity::~Entity()
 {
+	game_object->CleanUp();
+	RELEASE(game_object);
 }
 
 bool Entity::Start()

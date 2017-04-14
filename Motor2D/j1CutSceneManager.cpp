@@ -10,6 +10,7 @@
 #include "j1Window.h"
 #include "j1Viewports.h"
 #include "p2Log.h"
+#include "j1Scene.h"
 
 #define MASK_W  128
 #define MASK_H  72
@@ -63,12 +64,26 @@ bool j1CutSceneManager::Update(float dt)
 		remaining_actions.pop();
 	}
 
+	//Do active actions
 	PerformActions(dt);
 
+	//Update elements that don't have a module
 	UpdateElements(dt);
 
+	//Chenge between 2 cutscenes
 	if (change_scene)
 		ChangeScene();
+
+	//If cutscene finished, change scene
+	if (!change_scene && remaining_actions.empty() && active_actions.empty())
+	{
+		finished = true;
+		if (App->scene->GetCurrentScene() == (Scene*)App->scene->play_scene && next_scene != nullptr)
+		{
+			App->scene->ChangeScene(next_scene);
+			ClearScene();
+		}
+	}
 
 	return true;
 }
@@ -90,10 +105,18 @@ int j1CutSceneManager::GetNextID() const
 	return elements.size();
 }
 
-void j1CutSceneManager::Play(const char * path)
+void j1CutSceneManager::Play(const char * path, Scene* next_scene)
 {
+	App->scene->ChangeScene((Scene*)App->scene->play_scene);
 	Load(path);
 	scene_timer.Start();
+	finished = false;
+	this->next_scene = next_scene;
+}
+
+bool j1CutSceneManager::HasFinished() const
+{
+	return finished;
 }
 
 void j1CutSceneManager::Load(const char * path)
@@ -210,6 +233,10 @@ void j1CutSceneManager::PerformActions(float dt)
 				CutsceneMove* move = static_cast<CutsceneMove*>(*act);
 				MoveCamera(move);
 			}
+			else if ((*act)->action == a_modify)
+			{
+				PerformModify(nullptr, *act);
+			}
 		}
 		else
 		{
@@ -272,7 +299,7 @@ void j1CutSceneManager::ChangeScene()
 			if(!changed)
 			{
 				ClearScene();
-				Play(new_scene.c_str());
+				Play(new_scene.c_str(), next_scene);
 				changed = true;
 			}
 			alpha = 255 - 255 * (rel_time - 1);
@@ -297,7 +324,7 @@ void j1CutSceneManager::ChangeScene()
 			if (!changed)
 			{
 				ClearScene();
-				Play(new_scene.c_str());
+				Play(new_scene.c_str(), next_scene);
 				changed = true;
 			}
 			size = 0.0f + size*(rel_time - 1);
@@ -344,7 +371,7 @@ void j1CutSceneManager::ChangeScene()
 			if (!changed)
 			{
 				ClearScene();
-				Play(new_scene.c_str());
+				Play(new_scene.c_str(), next_scene);
 				changed = true;
 			}
 			size = 0.0f + size*(rel_time - 1);
@@ -376,7 +403,7 @@ void j1CutSceneManager::ChangeScene()
 	}
 	case c_s_e_null:
 		ClearScene();
-		Play(new_scene.c_str());
+		Play(new_scene.c_str(), next_scene);
 		change_scene = false;
 		break;
 	default:
@@ -563,56 +590,66 @@ void j1CutSceneManager::LoadModify(pugi::xml_node & node)
 	string ele = node.attribute("element").as_string();
 	pugi::xml_node modify = node.child("modify");
 
-	switch (GetElementGroup(ele.c_str()))
+	if (ele == "camera")
 	{
-	case e_g_entity:
-	{
-		CutsceneModifyEntity* me = new CutsceneModifyEntity(a_modify, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
-
-		entity_actions e_action = e_a_null;
-		string e_action_str = modify.attribute("action").as_string();
-
-		if (e_action_str == "kill")
-			e_action = e_a_kill;
-		else if (e_action_str == "spawn")
-			e_action = e_a_spawn;
-		else
-			e_action = e_a_change_pos;
-
-		me->entity_action = e_action;
-
-		me->pos = { modify.attribute("x").as_int(), modify.attribute("y").as_int() };
-
-		remaining_actions.push(me);
-
-		break; 
+		CutsceneModifyCamera* mc = new CutsceneModifyCamera(a_modify, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
+		mc->position = { modify.attribute("x").as_int(),modify.attribute("y").as_int() };
+		
+		remaining_actions.push(mc);
 	}
-	case e_g_image:
+	else
 	{
-		CutsceneModifyImage* mi = new CutsceneModifyImage(a_modify, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
+		switch (GetElementGroup(ele.c_str()))
+		{
+		case e_g_entity:
+		{
+			CutsceneModifyEntity* me = new CutsceneModifyEntity(a_modify, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
 
-		mi->var = modify.attribute("var").as_string();
+			entity_actions e_action = e_a_null;
+			string e_action_str = modify.attribute("action").as_string();
 
-		mi->rect = { modify.attribute("x").as_int(),  modify.attribute("y").as_int() , modify.attribute("w").as_int() , modify.attribute("h").as_int() };
+			if (e_action_str == "kill")
+				e_action = e_a_kill;
+			else if (e_action_str == "spawn")
+				e_action = e_a_spawn;
+			else
+				e_action = e_a_change_pos;
 
-		mi->path = modify.attribute("path").as_string();
+			me->entity_action = e_action;
 
-		remaining_actions.push(mi);
+			me->pos = { modify.attribute("x").as_int(), modify.attribute("y").as_int() };
 
-		break; 
-	}
-	case e_g_text:
-	{
-		CutsceneModifyText* mt = new CutsceneModifyText(a_modify, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
+			remaining_actions.push(me);
 
-		mt->txt = modify.attribute("txt").as_string();
+			break;
+		}
+		case e_g_image:
+		{
+			CutsceneModifyImage* mi = new CutsceneModifyImage(a_modify, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
 
-		remaining_actions.push(mt);
+			mi->var = modify.attribute("var").as_string();
 
-		break;
-	}
-	default:
-		break;
+			mi->rect = { modify.attribute("x").as_int(),  modify.attribute("y").as_int() , modify.attribute("w").as_int() , modify.attribute("h").as_int() };
+
+			mi->path = modify.attribute("path").as_string();
+
+			remaining_actions.push(mi);
+
+			break;
+		}
+		case e_g_text:
+		{
+			CutsceneModifyText* mt = new CutsceneModifyText(a_modify, node.attribute("element").as_string(), node.attribute("start").as_int(), node.attribute("duration").as_int());
+
+			mt->txt = modify.attribute("txt").as_string();
+
+			remaining_actions.push(mt);
+
+			break;
+		}
+		default:
+			break;
+		}
 	}
 }
 
@@ -745,56 +782,64 @@ void j1CutSceneManager::PerformStop(CutsceneElement * ele)
 
 void j1CutSceneManager::PerformModify(CutsceneElement * ele, CutsceneAction * act)
 {
-	//Just entity, image and text can be modified
-	if (ele->group == e_g_entity)
+	if (act->element_name == "camera")
 	{
-		CutsceneEntity* e = static_cast<CutsceneEntity*>(ele);
-		CutsceneModifyEntity* modify = static_cast<CutsceneModifyEntity*>(act);
-
-		switch (modify->entity_action)
-		{
-		case e_a_kill:
-			if (e->GetEntity() != nullptr)
-			{
-				App->entity->DeleteEntity(e->GetEntity());
-				e->SetNull();
-			}
-			break;
-		case e_a_spawn:
-			if (e->GetEntity() == nullptr)
-			{
-				e->SetEntity(App->entity->CreateEntity(modify->pos, e->path.c_str()));
-			}
-			break;
-		case e_a_change_pos:
-			e->GetEntity()->MoveToWorld(modify->pos); //should be a teleport to the position
-			break;
-		default:
-			break;
-		}
+		CutsceneModifyCamera* modify = static_cast<CutsceneModifyCamera*>(act);
+		App->view->SetCamera(-modify->position.x, -modify->position.y);
 	}
-	else if (ele->group == e_g_image)
+	else
 	{
-		CutsceneImage* i = static_cast<CutsceneImage*>(ele);
-		CutsceneModifyImage* modify = static_cast<CutsceneModifyImage*>(act);
-
-		if (modify->var == "tex")
-			i->ChangeTex(modify->path.c_str());
-		else if (modify->var == "rect")
-			i->ChangeRect(modify->rect);
-		else if (modify->var == "both")
+		//Just entity, image and text can be modified
+		if (ele->group == e_g_entity)
 		{
-			i->ChangeTex(modify->path.c_str());
-			i->ChangeRect(modify->rect);
-		}
-			
-	}
-	else if (ele->group == e_g_text)
-	{
-		CutsceneText* t = static_cast<CutsceneText*>(ele);
-		CutsceneModifyText* modify = static_cast<CutsceneModifyText*>(act);
+			CutsceneEntity* e = static_cast<CutsceneEntity*>(ele);
+			CutsceneModifyEntity* modify = static_cast<CutsceneModifyEntity*>(act);
 
-		t->SetText(modify->txt.c_str());
+			switch (modify->entity_action)
+			{
+			case e_a_kill:
+				if (e->GetEntity() != nullptr)
+				{
+					App->entity->DeleteEntity(e->GetEntity());
+					e->SetNull();
+				}
+				break;
+			case e_a_spawn:
+				if (e->GetEntity() == nullptr)
+				{
+					e->SetEntity(App->entity->CreateEntity(modify->pos, e->path.c_str()));
+				}
+				break;
+			case e_a_change_pos:
+				e->GetEntity()->MoveToWorld(modify->pos); //should be a teleport to the position
+				break;
+			default:
+				break;
+			}
+		}
+		else if (ele->group == e_g_image)
+		{
+			CutsceneImage* i = static_cast<CutsceneImage*>(ele);
+			CutsceneModifyImage* modify = static_cast<CutsceneModifyImage*>(act);
+
+			if (modify->var == "tex")
+				i->ChangeTex(modify->path.c_str());
+			else if (modify->var == "rect")
+				i->ChangeRect(modify->rect);
+			else if (modify->var == "both")
+			{
+				i->ChangeTex(modify->path.c_str());
+				i->ChangeRect(modify->rect);
+			}
+
+		}
+		else if (ele->group == e_g_text)
+		{
+			CutsceneText* t = static_cast<CutsceneText*>(ele);
+			CutsceneModifyText* modify = static_cast<CutsceneModifyText*>(act);
+
+			t->SetText(modify->txt.c_str());
+		}
 	}
 }
 
@@ -1110,5 +1155,9 @@ CutsceneChangeScene::CutsceneChangeScene(actions action, const char * name, int 
 }
 
 CutSceneAction_Cmp::CutSceneAction_Cmp()
+{
+}
+
+CutsceneModifyCamera::CutsceneModifyCamera(actions action, const char * name, int start_time, int duration) : CutsceneAction(action, name, start_time, duration)
 {
 }
