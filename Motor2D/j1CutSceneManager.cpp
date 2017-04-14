@@ -1100,7 +1100,7 @@ CutsceneText::CutsceneText(elements_groups group, const char * path, const char*
 
 CutsceneText::~CutsceneText()
 {
-	if (App->cutscene->gui_win != nullptr)
+	if (App->cutscene->gui_win != nullptr && !App->end_program)
 	{
 		App->gui->DeleteElement(App->cutscene->gui_win); 
 		App->cutscene->gui_win = nullptr;

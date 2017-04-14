@@ -189,6 +189,10 @@ bool j1App::Update()
 		ret = PostUpdate();
 
 	FinishUpdate();
+
+	if (!ret)
+		end_program = true;
+
 	return ret;
 }
 

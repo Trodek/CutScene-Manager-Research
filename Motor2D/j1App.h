@@ -127,9 +127,9 @@ public:
 
 	collision_filters* cf;
 
-private:
-
 	bool                end_program = false;
+
+private:
 
 	list<j1Module*>  	modules;
 	int					argc;
