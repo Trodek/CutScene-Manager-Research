@@ -268,5 +268,8 @@
     <Xml Include="..\Game\navi.xml">
       <Filter>Engine\4. Entities ==========\Entities xmls</Filter>
     </Xml>
+    <Xml Include="..\Game\test_cutscene2.xml">
+      <Filter>Engine\7. CutScene Manager ==</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

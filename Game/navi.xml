@@ -40,5 +40,5 @@
        <rect x = "48" y = "100" w = "48" h = "50"/>
      </anim>
    </animations>
-  <stats hp="100" speed="160"/>
+  <stats hp="100" speed="100"/>
 </file>

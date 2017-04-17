@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 
 <file>
-  <size w="64" h="64"/>
+  <size w="32" h="64"/>
    <animations texture ="textures/towersminions_sheet.png">
       <anim speed = "10" name = "run_down" loop = "true">
 	    <rect x = "352" y = "160" w = "64" h = "64"/>
@@ -25,5 +25,5 @@
         <rect x = "352" y = "160" w = "64" h = "64"/>
       </anim>
    </animations>
-  <stats hp="50" speed="45"/>
+  <stats hp="50" speed="20"/>
 </file>

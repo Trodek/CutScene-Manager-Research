@@ -9,41 +9,98 @@
       <image name="text_box" active="true" path="textures/text_box.png" pos_x ="380" pos_y="500" rect_x="0" rect_y="0" rect_w="563" rect_h="128" layer="190"/>
     </type>
     <type group="entity">
-      <entity name ="link" active="true" path="link.xml" pos_x="50" pos_y="50"/>
-      <entity name ="navi" active="true" path="navi.xml" pos_x="90" pos_y="50"/>
-      <entity name ="minion" active="true" path="minion.xml" pos_x="150" pos_y="50"/>
-      <entity name ="zelda" active="true" path="zelda.xml" pos_x="190" pos_y="50"/>
+      <entity name ="navi" active="true" path="navi.xml" pos_x="754" pos_y="1150"/>
+      <entity name ="zelda" active="true" path="zelda.xml" pos_x="784" pos_y="592"/>
+      <entity name ="minion" active="false" path="minion.xml" pos_x="784" pos_y="720"/>
+      <entity name ="link" active="true" path="link.xml" pos_x="784" pos_y="1150"/>
     </type>
     <type group="music">
-      <music name="main_music" active="true" path="Audio/Music/guessing-game_house.ogg"/>
+      <music name="main_music" active="false" path="Audio/Music/guessing-game_house.ogg"/>
+      <music name="main_music2" active="false" path="Audio/Music/princess_zeldas_rescue.ogg"/>
     </type>
     <type group="sound_effect">
+      <sound_effect name="link_dash" active="false" path="Audio/FX/Link_Dash.wav" loops="0"/>
     </type>
     <type group="text">
-      <text preload="false" name="info_text" active="true" pos_x="50" pos_y="250" txt="this is a test"/>
+      <text name="info_text" active="true" pos_x="400" pos_y="510" txt="After defeating Ganon, Link and Navi"/>
+      <text name="info_text2" active="true" pos_x="400" pos_y="535" txt="go to meet the Princess..."/>
     </type>
   </elements>
   <scene>
-    <act element="camera" type="move" start="4" duration="5">
-      <move x="300" y="500" ref="global" bezier="true">
-        <p1 x="1" y="0"/>
+    <act element="info_text" type="modify" start="3">
+      <modify txt="Zelda: HEEELP!!"/>
+    </act>
+    <act element="info_text2" type="modify" start="3">
+      <modify txt=""/>
+    </act>
+    <act element="info_text" type="disable" start="6"/>
+    <act element="info_text2" type="disable" start="6"/>
+    <act element="text_box" type="disable" start="6"/>
+    <act element="minion" type="enable" start="6"/>
+    <act element="main_music" type="play" start="6"/>
+    <act element="camera" type="modify" start="6">
+      <modify x="150" y="350"/>
+    </act>
+    <act element="map" type="enable" start="6"/>
+    <act element="minion" type="move" start="6">
+      <move x="784" y="600" ref="global" bezier="false"/>
+    </act>
+    <act element="link" type="move" start="6">
+      <move x="784" y="610" ref="global" bezier="false"/>
+    </act>
+    <act element="navi" type="move" start="6">
+      <move x="754" y="610" ref="global" bezier="false"/>
+    </act>
+    <act element="link" type="action" start="12"/>
+    <act element="link_dash" type="play" start="12"/>
+    <act element="minion" type="modify" start="13">
+      <modify action="kill"/>
+    </act>
+    <act element="text_box" type="move" start="12" duration="2">
+      <move x="530" y="850" ref="global" bezier="false"/>
+    </act>
+    <act element="main_music2" type="play" start="14"/>
+    <act element="text_box" type="enable" start="14"/>
+    <act element="info_text" type="enable" start="14"/>
+    <act element="info_text2" type="enable" start="14"/>
+    <act element="info_text" type="modify" start="14">
+      <modify txt="Link: Are you fine Princess?"/>
+    </act>
+    <act element="info_text" type="modify" start="17">
+      <modify txt="Zelda: Yes, I'm fine."/>
+    </act>
+    <act element="info_text" type="modify" start="20">
+      <modify txt="Link: We are back after defeating Ganon."/>
+    </act>
+    <act element="info_text2" type="modify" start="20">
+      <modify txt="Hyrule is safe now."/>
+    </act>
+    <act element="info_text" type="modify" start="23">
+      <modify txt="Link: Princess I want to tell you something..."/>
+    </act>
+    <act element="info_text2" type="modify" start="23">
+      <modify txt=""/>
+    </act>
+    <act element="info_text" type="modify" start="27">
+      <modify txt="Link: Princess I love you"/>
+    </act>
+    <act element="info_text" type="modify" start="30">
+      <modify txt="Zelda: Link... Thanks but..."/>
+    </act>
+    <act element="info_text" type="modify" start="34">
+      <modify txt="Zelda: Navi and I... We are lovers."/>
+    </act>
+    <act element="camera" type="move" start="37" duration="2">
+      <move x="150" y="290" ref="global" bezier="true">
+        <p1 x="0" y="1"/>
         <p2 x="0" y="1"/>
       </move>
     </act>
-    <act element="minion" type="move" start="3" duration="0">
-      <move x="25" y="24" ref="map" bezier="false"/>
-    </act>
-    <act element="link" type="action" start="2" duration="0"/>
-    <act element="main_music" type="stop" start="5"/>
-    <act element="info_text" type="modify" start="7">
-      <modify txt="this is not a test"/>
-    </act>
-    <act element="link" type="modify" start="10">
-      <modify action="kill" x="100" y="250"/>
-    </act>
-    <act element="info_text" type="disable" start="12"/>
-    <act type="change_scene" start="17" duration="4">
-      <change_scene path="test_cutscene.xml" effect="circle"/>
+    <act element="info_text" type="disable" start="37"/>
+    <act element="info_text2" type="disable" start="37"/>
+    <act element="text_box" type="disable" start="37"/>
+    <act type="change_scene" start="35" duration="4">
+      <change_scene path="test_cutscene2.xml" effect="circle"/>
     </act>
   </scene>
 </file>

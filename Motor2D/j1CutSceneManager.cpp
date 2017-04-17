@@ -298,8 +298,6 @@ void j1CutSceneManager::ChangeScene()
 		iPoint image_pos = { (int)win_w / 2,(int)win_h / 2 };
 		int margin_w, margin_h;
 
-		LOG("x:%d, y:%d", image_pos.x, image_pos.y);
-
 		if (rel_time < 1)
 		{
 			size -= size*rel_time;
@@ -429,6 +427,7 @@ void j1CutSceneManager::ClearScene()
 	}
 
 	App->view->SetCamera(0, 0);
+	App->audio->StopMusic();
 
 }
 
@@ -1036,7 +1035,7 @@ bool CutsceneMusic::IsPlaying() const
 }
 void CutsceneMusic::Play()
 {
-	App->audio->PlayMusic(path.c_str());
+	App->audio->PlayMusic(path.c_str(),0);
 	playing = true;
 }
 //------------------------
@@ -1081,6 +1080,9 @@ CutsceneText::CutsceneText(elements_groups group, const char * path, const char*
 		App->cutscene->gui_win = App->gui->UI_CreateWin({ 0,0 }, win_w, win_h, 0, false);
 	}
 	text = App->cutscene->gui_win->CreateText(pos, App->font->default);
+
+	if (!active)
+		text->enabled = false;
 }
 
 CutsceneText::~CutsceneText()

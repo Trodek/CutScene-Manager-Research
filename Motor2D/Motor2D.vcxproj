@@ -156,6 +156,7 @@
     <Xml Include="..\Game\test_cutscene.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="..\Game\test_cutscene2.xml" />
     <Xml Include="..\Game\zelda.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

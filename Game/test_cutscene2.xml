@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<file>
+  <elements>
+    <type group="map">
+    </type>
+    <type group="image">
+      <image name="link_house" active="true" path="textures/Link's_House.png" pos_x ="414" pos_y="182" rect_x="0" rect_y="0" rect_w="452" rect_h="356" layer="1"/>
+      <image name="text_box" active="false" path="textures/text_box.png" pos_x ="380" pos_y="500" rect_x="0" rect_y="0" rect_w="563" rect_h="128" layer="190"/>
+    </type>
+    <type group="entity">
+      <entity name ="link" active="true" path="link.xml" pos_x="525" pos_y="265"/>
+    </type>
+    <type group="music">
+      <music name="main_music" active="true" path="Audio/Music/Majora's Mask- Giant's Theme.ogg"/>
+    </type>
+    <type group="sound_effect">
+    </type>
+    <type group="text">
+      <text name="info_text" active="false" pos_x="400" pos_y="510" txt="After knowing the true, Link"/>
+      <text name="info_text2" active="false" pos_x="400" pos_y="535" txt="expend the days crying on his bed."/>
+    </type>
+  </elements>
+  <scene>
+    <act element="info_text" type="enable" start="4"/>
+    <act element="info_text2" type="enable" start="4"/>
+    <act element="text_box" type="enable" start="4"/>
+    <act element="info_text" type="disable" start="8"/>
+    <act element="info_text2" type="disable" start="8"/>
+    <act element="text_box" type="disable" start="8"/>
+    <act type="change_scene" start="9" duration="4">
+      <change_scene path="" effect="fade"/>
+    </act>
+  </scene>
+</file>
