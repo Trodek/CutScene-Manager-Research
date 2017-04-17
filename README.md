@@ -450,3 +450,63 @@ Example:
 
 **_Creating a Enable_**
 
+Enable change the sate of an element active parameter to true.
+
+Enable don't need special attributes. Enable don't need a duration.
+
+Example of enable:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="info_text" type="enable" start="12"/>
+	</scene>
+</file>
+
+```
+
+
+**_Creating a Disable_**
+
+Disable is the opposite of enable. 
+
+Disable don't need special attributes. Disable don't need a duration.
+
+Example of disable:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="info_text" type="disable" start="12"/>
+	</scene>
+</file>
+
+```
+
+
+**_Creating a Change Scene_**
+
+Change Scene change current scene to another one. 
+
+Change Scene need these attributes:
+- path: the new cutscene to be played.
+- effect: the effect to reproduce between scenes.
+
+This is an example of Change Scene:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act type="change_scene" start="17" duration="4">
+			<change_scene path="test_cutscene.xml" effect="circle"/>
+		</act>
+	</scene>
+</file>
+
+```
