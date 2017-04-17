@@ -47,6 +47,7 @@ After that, create an xml file and use this base structure:
 
 ```
 
+
 **Creating Elements**
 
 The Cutscene Manager classify the elements depending the group they have. 
@@ -79,6 +80,7 @@ Appling that to the xml file, shoul create a structure similar to this one:
 
 ```
 
+
 All elements have common attributes that need to be defined on the XML:
 - name: the name of the element.
 - active: define if the element is active when scene starts.
@@ -89,7 +91,7 @@ All elements have common attributes that need to be defined on the XML:
 The map madule that comes with this research allow to load one map and draw it on the screen. 
 Map don't have any unique parameter that needs to be set but it can already be loaded befor the scene is played.
 
-This is the attribut needed to create a map:
+This is the attribute needed to create a map:
 - preload: tells the manager if the map is already loaded.
 
 Map XML example:
@@ -106,6 +108,7 @@ Map XML example:
 </file>
 
 ```
+
 
 **_Creating an Image_**
 
@@ -135,6 +138,7 @@ Image creation example:
 
 ```
 
+
 **_Creating an Entity_**
 
 Entity is an element that can perform  pre-programed actions inside the engine. I've created a simple entity system that allow them to move and do an action.
@@ -158,6 +162,7 @@ Examlpe of entity creation:
 
 ```
 
+
 **_Creating a Music_**
 
 Music is a sound that will loop until stoped.
@@ -178,6 +183,7 @@ Music creation example:
 </file>
 
 ```
+
 
 **_Creating a Sound Effect_**
 
@@ -200,6 +206,7 @@ Example of creating a sounf effect:
 </file>
 
 ```
+
 
 **_Creating a Text_**
 
@@ -225,4 +232,221 @@ Text creation example:
 
 ```
 
+
 **Creating Actions**
+
+Actions are each change that happens on the cutscene. From a camera movement to a change in the text.
+
+Actions have a type that define what they should do. Depending on the type they behaviour and definition are differents.
+
+This manager has eight different actions:
+- Move
+- Action
+- Play
+- Stop
+- Modify
+- Enable
+- Disable
+- Change Scene
+
+All actions have common attributes:
+- element: name of the element to act.
+- type: kind of action to perform.
+- start: start time in seconds
+- duration: time that takes to finish the action.
+
+Example of action:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act type="change_scene" start="17" duration="4">
+			<!-- Here go all extra attributes needed -->
+		</act>
+	</scene>
+</file>
+
+```
+
+
+**_Creating a Move_**
+
+A move is a change in the position. 
+
+Move action can be done on these elements:
+- Image
+- Entity
+- Text
+
+To create a move, these are the extra attributes needed:
+- x: final x position
+- y: final y position
+- ref: reference type (local, global, map). This only apply to entities, other elements use global reference always.
+- bezier: defines if a bezier easing is used.
+- p1: bezier easing point 1 (needs a x and y value);
+- p2: bezier easing point 2 (needs a x and y value);
+
+Example of Movement:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="camera" type="move" start="4" duration="5">
+			<move x="300" y="500" ref="global" bezier="true">
+				<p1 x="1" y="0"/>
+				<p2 x="0" y="1"/>
+			</move>
+		</act>
+	</scene>
+</file>
+
+```
+
+
+**_Creating an Action_**
+
+Just entities have actions. From the entities provided with the example just link have action.
+
+Action dont need special attributes but they don't have to have duration.
+
+Example of Action:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="link" type="action" start="2"/>
+	</scene>
+</file>
+
+```
+
+
+**_Creating a Play_**
+
+Play only apply to music and sound effects. The same way that happens with actions, play actions dont need a duration.
+
+Example of Play:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="main_music" type="play" start="9"/>
+	</scene>
+</file>
+
+```
+
+
+**_Creating a Stop_**
+
+Stop is the inverse of Play but only affects to music.
+
+Example of Stop:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="main_music" type="stop" start="5"/>
+	</scene>
+</file>
+
+```
+
+
+**_Creating a Modify_**
+
+Modify change instantly a property of an element. Modify can be applied to entities, images and texts.
+
+Depending on the element the attributes needed are differents.
+
+_Modify an entity_
+
+Entities can be modified in 3 ways:
+- kill
+- spawn
+- pos
+
+The attributes neede for this modify are:
+- action: way to modify the entity.
+- x: x position to spawn or move.
+- y: y position to spawn or move.
+
+Example of modify entity:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="link" type="modify" start="10">
+			<modify action="kill" x="100" y="250"/>
+		</act>
+	</scene>
+</file>
+
+```
+
+_Modify an image_
+
+Images can be modified in 3 ways:
+- textures (tex)
+- rect
+- both
+
+The attributes neede for this modify are:
+- var: variable to modify.
+- path: path of the new texture.
+- x: x position of the new rect.
+- y: y position of the new rect.
+- w: width of the new rect.
+- h: height of the new rect.
+
+Example of modify image:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="test_image" type="modify" start="10">
+			<modify var="both" path="textures/test_texture.png" x="100" y="250" w="50" h="75"/>
+		</act>
+	</scene>
+</file>
+
+```
+
+_Modify a text_
+
+Modify a text change the string shown on screen for a new one.
+
+A text is needed to modify the text.
+
+Example:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="test_image" type="modify" start="10">
+			<modify txt="Modified text."/>
+		</act>
+	</scene>
+</file>
+
+```
+
+
+**_Creating a Enable_**
+
