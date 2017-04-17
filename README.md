@@ -2,19 +2,19 @@
 
 ## Cutscene vs Cinematic?
 
-The trminology usually used to refer to videos that are shown in a videogmaes is Cinematic.
+The terminology usually used to refer to videos that are shown in a videogames is Cinematic.
 Cinematic refers to all the sequences shown that don't involve player interactions but that sequences can be divided in different types:
 - Live-action Cutscenes: Real actors are filmed on a constructed set.
-- Pre-rendered Cutscenes: The scene is animated and rendered beforhand.
+- Pre-rendered Cutscenes: The scene is animated and rendered beforehand.
 - Real time Cutscene: The scene is rendered at the same time it happens using the game engine.
-- Mixed media Cutscene: They are a convination between pre-rendered and real time cutscenes.
+- Mixed media Cutscene: They are a combination between pre-rendered and real time cutscenes.
 - Interactive Cutscene: The game takes control of the character and request the player for some inputs during the cinematic.
 
 ## How other engines do cutscenes?
 
 Most of the free engines use a similar system. The have a tool that allow to change position, size, rotation and all available properties for that object during time.
 For that they use what are usually called key-frames. 
-Key-frames are points where the developer asign a value for the properties the object have. Then the game engine, using interpolations, transform the object betwen these key-frames to create a smoth animation.
+Key-frames are points where the developer assign a value for the properties the object have. Then the game engine, using interpolations, transform the object between these key-frames to create a smooth animation.
 
 Here are some video examples of how they are created on Unity and Unreal Engine 4:
 
@@ -59,7 +59,7 @@ The groups that I created as examples are:
 - Sound Effect
 - Text
 
-Appling that to the xml file, shoul create a structure similar to this one:
+Appling that to the xml file, should create a structure similar to this one:
 ```markdown
 <file>
 	<elements>
@@ -84,14 +84,14 @@ Appling that to the xml file, shoul create a structure similar to this one:
 All elements have common attributes that need to be defined on the XML:
 - name: the name of the element.
 - active: define if the element is active when scene starts.
-- path: the path of the file cotining element data (can be an image path, xml, music...)
+- path: the path of the file containing element data (can be an image path, xml, music...)
 
 The camera is an element that don't need to be created. The camera already exist and actions can be applied to it.
 
 **_Creating a Map_**
 
-The map madule that comes with this research allow to load one map and draw it on the screen. 
-Map don't have any unique parameter that needs to be set but it can already be loaded befor the scene is played.
+The map module that comes with this research allow to load one map and draw it on the screen. 
+Map don't have any unique parameter that needs to be set but it can already be loaded before the scene is played.
 
 This is the attribute needed to create a map:
 - preload: tells the manager if the map is already loaded.
@@ -116,7 +116,7 @@ Map XML example:
 
 Images are static elements that can be drawn at any point of the screen, can also be used to create text boxes.
 
-Images need these atributes:
+Images need these attributes:
 - pos_x: x position on the screen.
 - pos_y: y position on the screen.
 - rect_x: x position of the image rectangle inside the texture.
@@ -143,7 +143,7 @@ Image creation example:
 
 **_Creating an Entity_**
 
-Entity is an element that can perform  pre-programed actions inside the engine. I've created a simple entity system that allow them to move and do an action.
+Entity is an element that can perform pre-programed actions inside the engine. I've created a simple entity system that allow them to move and do an action.
 
 Entities need these attributes:
 - pos_x: initial x position on screen.
@@ -167,7 +167,7 @@ Examlpe of entity creation:
 
 **_Creating a Music_**
 
-Music is a sound that will loop until stoped.
+Music is a sound that will loop until stopped.
 
 Music don't need any unique attribute.
 
@@ -194,7 +194,7 @@ Sound effects are short sounds that are played the specified number of times.
 Sound Effects need this attribute:
 - loops: number of times a sound effect needs to be played.
 
-Example of creating a sounf effect:
+Example of creating a sound effect:
 ```markdown
 <file>
 	<elements>
@@ -239,7 +239,7 @@ Text creation example:
 
 Actions are each change that happens on the cutscene. From a camera movement to a change in the text.
 
-Actions have a type that define what they should do. Depending on the type they behaviour and definition are differents.
+Actions have a type that define what they should do. Depending on the type they behaviour and definition are different.
 
 This manager has eight different actions:
 - Move
@@ -314,7 +314,7 @@ Example of Movement:
 
 Just entities have actions. From the entities provided with the example just link have action.
 
-Action dont need special attributes but they don't have to have duration.
+Action don’t need special attributes but they don't have to have duration.
 
 Example of Action:
 ```markdown
@@ -332,7 +332,7 @@ Example of Action:
 
 **_Creating a Play_**
 
-Play only apply to music and sound effects. The same way that happens with actions, play actions dont need a duration.
+Play only apply to music and sound effects. The same way that happens with actions, play actions don’t need a duration.
 
 Example of Play:
 ```markdown
@@ -370,7 +370,7 @@ Example of Stop:
 
 Modify change instantly a property of an element. Modify can be applied to entities, images and texts.
 
-Depending on the element the attributes needed are differents.
+Depending on the element the attributes needed are different.
 
 _Modify an entity_
 
@@ -379,7 +379,7 @@ Entities can be modified in 3 ways:
 - spawn
 - pos
 
-The attributes neede for this modify are:
+The attributes needed for this modify are:
 - action: way to modify the entity.
 - x: x position to spawn or move.
 - y: y position to spawn or move.
@@ -406,7 +406,7 @@ Images can be modified in 3 ways:
 - rect
 - both
 
-The attributes neede for this modify are:
+The attributes needed for this modify are:
 - var: variable to modify.
 - path: path of the new texture.
 - x: x position of the new rect.
@@ -477,7 +477,7 @@ Example of camera modify:
 
 **_Creating a Enable_**
 
-Enable change the sate of an element active parameter to true.
+Enable change the state of an element active parameter to true.
 
 Enable don't need special attributes. Enable don't need a duration.
 
@@ -521,7 +521,7 @@ Change Scene change current scene to another one.
 
 Change Scene need these attributes:
 - path: the new cutscene to be played.
-- effect: the effect to reproduce between scenes.
+- effect: the effect to reproduce between scenes. (circle, star, fade)
 
 This is an example of Change Scene:
 ```markdown
@@ -538,3 +538,37 @@ This is an example of Change Scene:
 
 ```
 
+## Exercise:
+
+The objective of this exercise is to help understanding how the manager works.
+
+- **TODO 1: I'm too far, I can't help Zelda**
+
+Move link to make his attack reach the skeleton.
+For this you need to create a move action.
+The target destination should be: x="784" y="610"
+The movement should start after 6 sec.
+Check "Creating a Move" for all needed attributes.
+
+- **TODO 2: That's not my place**
+
+Change scenes between the actual one and link house one.
+The effect used on solution is circle.
+The change should start after 35 sec.
+
+- **TODO 3: And now... What**
+
+Create the link house scene.
+You can reproduce the same one from the solution or create your own version.
+Needed values:
+- Link House image: path: textures/Link's_House.png pos_x: 414 pos_y: 182 rect_x: 0 rect_y:0 rect_w: 452 rect_h: 356
+- Music: path: Audio/Music/Majora's Mask- Giant's Theme.ogg
+- Link: pos_x: 525 pos_y: 265
+
+_Pro tip: you can change scenes without a next scene._
+
+## Useful Links
+
+[https://www.giantbomb.com/in-engine-cinematic/3015-964/](https://www.giantbomb.com/in-engine-cinematic/3015-964/)
+[https://unity3d.com/es/learn/tutorials/topics/animation/animation-view?playlist=17099](https://unity3d.com/es/learn/tutorials/topics/animation/animation-view?playlist=17099)
+[https://en.wikipedia.org/wiki/Cutscene](https://en.wikipedia.org/wiki/Cutscene)
