@@ -408,7 +408,8 @@ void j1CutSceneManager::ClearScene()
 		if ((*it)->group == e_g_entity)
 		{
 			CutsceneEntity* entity = static_cast<CutsceneEntity*>(*it);
-			App->entity->DeleteEntity(entity->GetEntity());
+			if(entity->GetEntity() != nullptr)
+				App->entity->DeleteEntity(entity->GetEntity());
 		}
 		RELEASE(*it);
 		it = elements.erase(it);
@@ -996,7 +997,6 @@ CutsceneEntity::CutsceneEntity(elements_groups group, const char * path, const c
 
 CutsceneEntity::~CutsceneEntity()
 {
-	App->entity->DeleteEntity(entity);
 }
 
 Entity * CutsceneEntity::GetEntity() const
