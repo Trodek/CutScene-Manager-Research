@@ -84,7 +84,7 @@ All elements have common attributes that need to be defined on the XML:
 - active: define if the element is active when scene starts.
 - path: the path of the file cotining element data (can be an image path, xml, music...)
 
-_Creating a Map_
+**_Creating a Map_**
 
 The map madule that comes with this research allow to load one map and draw it on the screen. 
 Map don't have any unique parameter that needs to be set but it can already be loaded befor the scene is played.
@@ -107,7 +107,7 @@ Map XML example:
 
 ```
 
-_Creating an Image_
+**_Creating an Image_**
 
 Images are static elements that can be drawn at any point of the screen, can also be used to create text boxes.
 
@@ -118,6 +118,7 @@ Images need these atributes:
 - rect_y: y position of the image rectangle inside the texture.
 - rect_w: image width inside the texture.
 - rect_h: image height inside the texture.
+- layer: the layer the image should be printed.
 
 Image creation example:
 ```markdown
@@ -133,3 +134,95 @@ Image creation example:
 </file>
 
 ```
+
+**_Creating an Entity_**
+
+Entity is an element that can perform  pre-programed actions inside the engine. I've created a simple entity system that allow them to move and do an action.
+
+Entities need these attributes:
+- pos_x: initial x position on screen.
+- pos_y: initial y position on screen.
+
+Examlpe of entity creation:
+```markdown
+<file>
+	<elements>
+		<type group="entity">
+			<entity name ="link" active="true" path="link.xml" pos_x="50" pos_y="50"/>
+		 </type>
+	</elements>
+	<scene>
+		<!-- Here go all the actions that should be done during the scene -->
+	</scene>
+</file>
+
+```
+
+**_Creating a Music_**
+
+Music is a sound that will loop until stoped.
+
+Music don't need any unique attribute.
+
+Music creation example:
+```markdown
+<file>
+	<elements>
+		<type group="music">
+			<music name="main_music" active="true" path="Audio/Music/guessing-game_house.ogg"/>
+		</type>
+	</elements>
+	<scene>
+		<!-- Here go all the actions that should be done during the scene -->
+	</scene>
+</file>
+
+```
+
+**_Creating a Sound Effect_**
+
+Sound effects are short sounds that are played the specified number of times.
+
+Sound Effects need this attribute:
+- loops: number of times a sound effect needs to be played.
+
+Example of creating a sounf effect:
+```markdown
+<file>
+	<elements>
+		<type group="sound_effect">
+			<sound_effect name="hello_man" active="true" path="Audio/FX/hello_man.wav" loops="0"/>
+		</type>
+	</elements>
+	<scene>
+		<!-- Here go all the actions that should be done during the scene -->
+	</scene>
+</file>
+
+```
+
+**_Creating a Text_**
+
+Text is always created inside screen. If the camera is moved, text will follow camera movement.
+
+Text need these attributes:
+- pos_x: x position on the screen.
+- pos_y: y position on the screen.
+- txt: the initial text to be displayed.
+
+Text creation example:
+```markdown
+<file>
+	<elements>
+		<type group="text">
+			<text preload="false" name="info_text" active="true" pos_x="50" pos_y="250" txt="this is a test"/>
+		</type>
+	</elements>
+	<scene>
+		<!-- Here go all the actions that should be done during the scene -->
+	</scene>
+</file>
+
+```
+
+**Creating Actions**

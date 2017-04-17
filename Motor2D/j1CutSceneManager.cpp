@@ -25,21 +25,11 @@ j1CutSceneManager::~j1CutSceneManager()
 {
 }
 
-bool j1CutSceneManager::Awake(pugi::xml_node &)
-{
-	return true;
-}
-
 bool j1CutSceneManager::Start()
 {
 	circle_mask_tex = App->tex->LoadTexture("textures/circle_mask.png");
 	star_mask_tex = App->tex->LoadTexture("textures/star_mask.png");
 
-	return true;
-}
-
-bool j1CutSceneManager::PreUpdate()
-{
 	return true;
 }
 
@@ -85,11 +75,6 @@ bool j1CutSceneManager::Update(float dt)
 		}
 	}
 
-	return true;
-}
-
-bool j1CutSceneManager::PostUpdate()
-{
 	return true;
 }
 

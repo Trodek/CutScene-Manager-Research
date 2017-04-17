@@ -43,7 +43,7 @@
     </act>
     <act element="info_text" type="disable" start="12"/>
     <act type="change_scene" start="17" duration="4">
-      <change_scene path="test_cutscene.xml" effect="circle"/>
+      <change_scene path="" effect="circle"/>
     </act>
   </scene>
 </file>

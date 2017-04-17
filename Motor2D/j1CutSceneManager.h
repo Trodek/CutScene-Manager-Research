@@ -270,20 +270,11 @@ public:
 	j1CutSceneManager();
 	~j1CutSceneManager();
 
-	// Called before render is available
-	bool Awake(pugi::xml_node&);
-
 	// Called before the first frame
 	bool Start();
 
 	// Called each loop iteration
-	bool PreUpdate();
-
-	// Called each loop iteration
 	bool Update(float dt);
-
-	// Called each loop iteration
-	bool PostUpdate();
 
 	// Called before quitting
 	bool CleanUp();
