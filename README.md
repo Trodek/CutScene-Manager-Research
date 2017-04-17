@@ -48,7 +48,7 @@ After that, create an xml file and use this base structure:
 ```
 
 
-**Creating Elements**
+- **Creating Elements**
 
 The Cutscene Manager classify the elements depending the group they have. 
 The groups that I created as examples are:
@@ -85,6 +85,8 @@ All elements have common attributes that need to be defined on the XML:
 - name: the name of the element.
 - active: define if the element is active when scene starts.
 - path: the path of the file cotining element data (can be an image path, xml, music...)
+
+The camera is an element that don't need to be created. The camera already exist and actions can be applied to it.
 
 **_Creating a Map_**
 
@@ -233,7 +235,7 @@ Text creation example:
 ```
 
 
-**Creating Actions**
+- **Creating Actions**
 
 Actions are each change that happens on the cutscene. From a camera movement to a change in the text.
 
@@ -279,6 +281,7 @@ Move action can be done on these elements:
 - Image
 - Entity
 - Text
+- Camera
 
 To create a move, these are the extra attributes needed:
 - x: final x position
@@ -448,6 +451,30 @@ Example:
 ```
 
 
+_Modify the camera_
+
+Camera position can be modified. 
+
+The attributes needed are:
+- x: camera x new position.
+- y: camera y new position.
+
+Example of camera modify:
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<act element="camera" type="modify" start="10">
+			<modify x="25" y="250"/>
+		</act>
+	</scene>
+</file>
+
+```
+
+
 **_Creating a Enable_**
 
 Enable change the sate of an element active parameter to true.
@@ -510,3 +537,4 @@ This is an example of Change Scene:
 </file>
 
 ```
+
