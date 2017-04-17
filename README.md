@@ -23,7 +23,7 @@ Here are some video examples of how they are created on Unity and Unreal Engine 
 
 ## Proposed Solution:
 
-The solution that I proposed is a real time cutscene system based on SDL2.0, requires access to XML files and the engine needs to have their own entity, GUI and audio system.
+The solution that I proposed is a real time cutscene system based on SDL2.0, requires access to XML files and the engine needs to have their own entity, GUI, map and audio system.
 This solutions is a base to be implemented on other engines so the functionality is reduced just to show how to implement it.
 
 ### UML
@@ -47,5 +47,89 @@ After that, create an xml file and use this base structure:
 
 ```
 
+**Creating Elements**
 
+The Cutscene Manager classify the elements depending the group they have. 
+The groups that I created as examples are:
+- Map
+- Image
+- Entity
+- Music
+- Sound Effect
+- Text
 
+Appling that to the xml file, shoul create a structure similar to this one:
+```markdown
+<file>
+	<elements>
+		<type group="map">
+			<!-- Here go all elements for group map -->
+		</type>
+		<type group="image">
+			<!-- Here go all elements for group image -->
+		</type>
+		<type group="entity">
+			<!-- Here go all elements for group entity -->
+		</type>
+	</elements>
+	<scene>
+		<!-- Here go all the actions that should be done during the scene -->
+	</scene>
+</file>
+
+```
+
+All elements have common attributes that need to be defined on the XML:
+- name: the name of the element.
+- active: define if the element is active when scene starts.
+- path: the path of the file cotining element data (can be an image path, xml, music...)
+
+_Creating a Map_
+
+The map madule that comes with this research allow to load one map and draw it on the screen. 
+Map don't have any unique parameter that needs to be set but it can already be loaded befor the scene is played.
+
+This is the attribut needed to create a map:
+- preload: tells the manager if the map is already loaded.
+
+Map XML example:
+```markdown
+<file>
+	<elements>
+		<type group="map">
+			<map preload ="false" name="map" active="true" path="cut_scene_map.tmx"/>
+		</type>
+	</elements>
+	<scene>
+		<!-- Here go all the actions that should be done during the scene -->
+	</scene>
+</file>
+
+```
+
+_Creating an Image_
+
+Images are static elements that can be drawn at any point of the screen, can also be used to create text boxes.
+
+Images need these atributes:
+- pos_x: x position on the screen.
+- pos_y: y position on the screen.
+- rect_x: x position of the image rectangle inside the texture.
+- rect_y: y position of the image rectangle inside the texture.
+- rect_w: image width inside the texture.
+- rect_h: image height inside the texture.
+
+Image creation example:
+```markdown
+<file>
+	<elements>
+		<type group="image">
+			<image name="test_image" active="true" path="textures/Base_entity.png" pos_x ="20" pos_y="60" rect_x="0" rect_y="0" rect_w="90" rect_h="90" layer="2"/>
+		</type>
+	</elements>
+	<scene>
+		<!-- Here go all the actions that should be done during the scene -->
+	</scene>
+</file>
+
+```
