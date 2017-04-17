@@ -1,8 +1,8 @@
 # 2D Cutscene Manager
 
-## What is a Cutscene and a Cinematic?
+## Cutscene vs Cinematic?
 
-The trminology usually used to refer to a video that is shown in a videogmaes is Cinematic.
+The trminology usually used to refer to videos that are shown in a videogmaes is Cinematic.
 Cinematic refers to all the sequences shown that don't involve player interactions but that sequences can be divided in different types:
 - Live-action Cutscenes: Real actors are filmed on a constructed set.
 - Pre-rendered Cutscenes: The scene is animated and rendered beforhand.
@@ -23,10 +23,29 @@ Here are some video examples of how they are created on Unity and Unreal Engine 
 
 ## Proposed Solution:
 
-The solution that I proposed is based on SDL2.0, requires access to XML files and the engine needs to have their own entity system, GUI and audio.
+The solution that I proposed is a real time cutscene system based on SDL2.0, requires access to XML files and the engine needs to have their own entity, GUI and audio system.
 This solutions is a base to be implemented on other engines so the functionality is reduced just to show how to implement it.
 
 ### UML
 
-![](https://i.gyazo.com/4396083f2a0e759d0492b84a06545235.png)
+[![](https://i.gyazo.com/4396083f2a0e759d0492b84a06545235.png)](https://i.gyazo.com/4396083f2a0e759d0492b84a06545235.png)
+
+### Creating a Cutscene
+
+To create a cutscene, first be sure that all elements that need to appear are implemented on the engine and the cutscene manager support them.
+After that, create an xml file and use this base structure:
+
+```markdown
+<file>
+	<elements>
+		<!-- Here go all elements that appear at the scene -->
+	</elements>
+	<scene>
+		<!-- Here go all the actions that should be done during the scene -->
+	</scene>
+</file>
+
+```
+
+
 
