@@ -540,6 +540,8 @@ This is an example of Change Scene:
 
 ## Exercise:
 
+[Download](https://github.com/Trodek/CutScene-Manager-Research/releases/download/v1.0/Cutscene.Manager.zip)
+
 The objective of this exercise is to help understanding how the manager works.
 
 - **TODO 1: I'm too far, I can't help Zelda**
