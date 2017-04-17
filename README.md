@@ -1,37 +1,32 @@
 # 2D Cutscene Manager
 
-You can use the [editor on GitHub](https://github.com/Trodek/CutScene-Manager-Research/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## What is a Cutscene and a Cinematic?
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+The trminology usually used to refer to a video that is shown in a videogmaes is Cinematic.
+Cinematic refers to all the sequences shown that don't involve player interactions but that sequences can be divided in different types:
+- Live-action Cutscenes: Real actors are filmed on a constructed set.
+- Pre-rendered Cutscenes: The scene is animated and rendered beforhand.
+- Real time Cutscene: The scene is rendered at the same time it happens using the game engine.
+- Mixed media Cutscene: They are a convination between pre-rendered and real time cutscenes.
+- Interactive Cutscene: The game takes control of the character and request the player for some inputs during the cinematic.
 
-### Markdown
+## How other engines do cutscenes?
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Most of the free engines use a similar system. The have a tool that allow to change position, size, rotation and all available properties for that object during time.
+For that they use what are usually called key-frames. 
+Key-frames are points where the developer asign a value for the properties the object have. Then the game engine, using interpolations, transform the object betwen these key-frames to create a smoth animation.
 
-```markdown
-Syntax highlighted code block
+Here are some video examples of how they are created on Unity and Unreal Engine 4:
 
-# Header 1
-## Header 2
-### Header 3
+- [Unity Cutscene](https://www.youtube.com/watch?v=DONjqcwwaBg)
+- [Unreal Engine 4 Cutscene](https://www.youtube.com/watch?v=mrCEtE5RnHw)
 
-- Bulleted
-- List
+## Proposed Solution:
 
-1. Numbered
-2. List
+The solution that I proposed is based on SDL2.0, requires access to XML files and the engine needs to have their own entity system, GUI and audio.
+This solutions is a base to be implemented on other engines so the functionality is reduced just to show how to implement it.
 
-**Bold** and _Italic_ and `Code` text
+### UML
 
-[Link](url) and ![Image](src)
-```
+![](https://gyazo.com/4396083f2a0e759d0492b84a06545235)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Trodek/CutScene-Manager-Research/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
