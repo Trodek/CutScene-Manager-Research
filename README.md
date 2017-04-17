@@ -28,5 +28,5 @@ This solutions is a base to be implemented on other engines so the functionality
 
 ### UML
 
-![](https://gyazo.com/4396083f2a0e759d0492b84a06545235)
+![](https://i.gyazo.com/4396083f2a0e759d0492b84a06545235.png)
 
